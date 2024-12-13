@@ -28,63 +28,55 @@ namespace Hsm.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("AppointmentTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreatedDateUTC")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedDateUTC")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkScheduleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("WorkScheduleId");
 
                     b.ToTable("Appointments");
                 });
 
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.BedManagement", b =>
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.City", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AssignedPatientId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDateUTC")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Room")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedDateUTC")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedPatientId");
-
-                    b.ToTable("Beds");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Hsm.Domain.Entities.Entities.Doctor", b =>
@@ -99,10 +91,17 @@ namespace Hsm.Persistence.Migrations
                     b.Property<DateTime>("CreatedDateUTC")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("HospitalId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -110,11 +109,7 @@ namespace Hsm.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Specialization")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Surname")
+                    b.Property<string>("Specialty")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -124,82 +119,22 @@ namespace Hsm.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("HospitalId");
 
                     b.ToTable("Doctors");
                 });
 
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.ElectronicHealthRecord", b =>
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Hospital", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedDateUTC")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("PatientId1")
+                    b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("UpdatedDateUTC")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PatientId1");
-
-                    b.ToTable("ElectronicHealthRecords");
-                });
-
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Inventory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDateUTC")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Threshold")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDateUTC")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Inventories");
-                });
-
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Patient", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ContactInfo")
+                    b.Property<string>("ContactNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -213,30 +148,61 @@ namespace Hsm.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("UpdatedDateUTC")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("CityId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Hospitals");
                 });
 
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Staff", b =>
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AppUserId")
+                    b.Property<DateTime>("CreatedDateUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NotificationType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDateUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.WorkSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDateUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
@@ -246,18 +212,17 @@ namespace Hsm.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdatedDateUTC")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("DoctorId");
 
-                    b.ToTable("StaffMembers");
+                    b.ToTable("WorkSchedules");
                 });
 
             modelBuilder.Entity("Hsm.Domain.Entities.Identity.AppRole", b =>
@@ -347,6 +312,10 @@ namespace Hsm.Persistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TcNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -477,76 +446,113 @@ namespace Hsm.Persistence.Migrations
 
             modelBuilder.Entity("Hsm.Domain.Entities.Entities.Appointment", b =>
                 {
-                    b.HasOne("Hsm.Domain.Entities.Entities.Doctor", "Doctor")
+                    b.HasOne("Hsm.Domain.Entities.Identity.AppUser", "User")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hsm.Domain.Entities.Entities.Patient", "Patient")
+                    b.HasOne("Hsm.Domain.Entities.Entities.WorkSchedule", "WorkSchedule")
                         .WithMany("Appointments")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("WorkScheduleId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Doctor");
+                    b.Navigation("User");
 
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.BedManagement", b =>
-                {
-                    b.HasOne("Hsm.Domain.Entities.Entities.Patient", "AssignedPatient")
-                        .WithMany()
-                        .HasForeignKey("AssignedPatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssignedPatient");
+                    b.Navigation("WorkSchedule");
                 });
 
             modelBuilder.Entity("Hsm.Domain.Entities.Entities.Doctor", b =>
                 {
                     b.HasOne("Hsm.Domain.Entities.Identity.AppUser", "AppUser")
-                        .WithMany()
+                        .WithMany("Doctors")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.ElectronicHealthRecord", b =>
-                {
-                    b.HasOne("Hsm.Domain.Entities.Entities.Patient", "Patient")
-                        .WithMany("MedicalRecords")
-                        .HasForeignKey("PatientId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Patient", b =>
-                {
-                    b.HasOne("Hsm.Domain.Entities.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Staff", b =>
-                {
-                    b.HasOne("Hsm.Domain.Entities.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
+                    b.HasOne("Hsm.Domain.Entities.Entities.Hospital", "Hospital")
+                        .WithMany("Doctors")
+                        .HasForeignKey("HospitalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("Hospital");
+                });
+
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Hospital", b =>
+                {
+                    b.HasOne("Hsm.Domain.Entities.Entities.City", "City")
+                        .WithMany("Hospitals")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Hsm.Domain.Entities.Entities.Address", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("HospitalId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.HasKey("HospitalId");
+
+                            b1.ToTable("Hospitals");
+
+                            b1.WithOwner()
+                                .HasForeignKey("HospitalId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Notification", b =>
+                {
+                    b.HasOne("Hsm.Domain.Entities.Identity.AppUser", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.WorkSchedule", b =>
+                {
+                    b.HasOne("Hsm.Domain.Entities.Entities.Doctor", "Doctor")
+                        .WithMany("WorkSchedules")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -600,16 +606,33 @@ namespace Hsm.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.City", b =>
+                {
+                    b.Navigation("Hospitals");
+                });
+
             modelBuilder.Entity("Hsm.Domain.Entities.Entities.Doctor", b =>
+                {
+                    b.Navigation("WorkSchedules");
+                });
+
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Hospital", b =>
+                {
+                    b.Navigation("Doctors");
+                });
+
+            modelBuilder.Entity("Hsm.Domain.Entities.Entities.WorkSchedule", b =>
                 {
                     b.Navigation("Appointments");
                 });
 
-            modelBuilder.Entity("Hsm.Domain.Entities.Entities.Patient", b =>
+            modelBuilder.Entity("Hsm.Domain.Entities.Identity.AppUser", b =>
                 {
                     b.Navigation("Appointments");
 
-                    b.Navigation("MedicalRecords");
+                    b.Navigation("Doctors");
+
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

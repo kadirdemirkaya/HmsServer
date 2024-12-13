@@ -5,14 +5,19 @@ namespace Hsm.Domain.Entities.Entities
 {
     public class Doctor : BaseEntity
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Specialization { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Specialty { get; set; }
         public string Schedule { get; set; }
+
+        public Guid HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
 
         public Guid AppUserId { get; set; }
         public AppUser AppUser { get; set; }
 
-        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+
+        public ICollection<WorkSchedule> WorkSchedules { get; set; }
     }
 }
