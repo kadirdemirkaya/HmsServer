@@ -1,5 +1,8 @@
-﻿namespace Hsm.Domain.Entities.Entities
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Hsm.Domain.Entities.Entities
 {
+    [Owned]
     public class Address
     {
         public string Street { get; set; }

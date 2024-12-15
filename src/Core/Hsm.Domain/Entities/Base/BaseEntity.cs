@@ -5,10 +5,11 @@ namespace Hsm.Domain.Entities.Base
     public class BaseEntity : IBaseEntity
     {
         [Key]
-        public Guid Id { get; set; }
-        public DateTime CreatedDateUTC { get; set; } = DateTime.UtcNow;
-        public DateTime? UpdatedDateUTC { get; set; }
-        public bool IsActive { get; set; } = true;
+        public virtual Guid Id { get; set; }
+        public virtual DateTime CreatedDateUTC { get; set; } = DateTime.UtcNow;
+        public virtual DateTime? UpdatedDateUTC { get; set; }
+        public virtual bool IsActive { get; set; } = true;
+        public virtual byte[] RowVersion { get; set; } = null!;
 
 
         public BaseEntity()
