@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using EventFlux;
 
 namespace Hsm.Domain.Models.Page
 {
@@ -8,9 +8,13 @@ namespace Hsm.Domain.Models.Page
         public int PageSize { get; set; } = pageSize;
     }
 
-    public class BasePagedQuery<T>(int PageNumber, int PageSize) : BasePageQuery(PageNumber, PageSize), IRequest<T>
-        where T : class
+    public class BasePagedQuery<T> : BasePageQuery, IEventRequest<T>
+        where T : IEventResponse
     {
+        public BasePagedQuery(int PageNumber, int PageSize) : base(PageNumber, PageSize)
+        {
+        }
+
         public BasePagedQuery() : this(1, 10)
         {
 
