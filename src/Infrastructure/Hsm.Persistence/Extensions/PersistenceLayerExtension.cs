@@ -6,7 +6,6 @@ using Hsm.Domain.Models.Options;
 using Hsm.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
