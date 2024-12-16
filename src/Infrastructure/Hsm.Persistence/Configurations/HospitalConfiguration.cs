@@ -15,10 +15,11 @@ namespace Hsm.Persistence.Configurations
 
             builder.Property(c => c.ContactNumber).IsRequired();
             builder.Property(c => c.Name).IsRequired();
+
             builder.Property(c => c.CreatedDateUTC).IsRequired();
-            builder.Property(c => c.UpdatedDateUTC).IsRequired();
+            builder.Property(c => c.UpdatedDateUTC).IsRequired(false);
             builder.Property(c => c.RowVersion).IsRowVersion();
-            builder.Property(c => c.IsActive).IsRowVersion();
+            builder.Property(c => c.IsActive).IsRequired();
 
             builder.HasOne(c => c.City)
                    .WithMany(h => h.Hospitals)

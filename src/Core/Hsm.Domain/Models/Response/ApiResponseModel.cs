@@ -1,4 +1,6 @@
-﻿namespace Hsm.Domain.Models.Response
+﻿using System.Text.Json;
+
+namespace Hsm.Domain.Models.Response
 {
     public class ApiResponseModel<T>
     {
@@ -39,5 +41,6 @@
         {
             return new ApiResponseModel<T>(default(T), false, 500, message);
         }
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

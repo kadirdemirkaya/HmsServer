@@ -157,6 +157,5 @@ namespace HsmServer.UnitTest
 
             mockEventBus.Verify(bus => bus.PublishAsync(It.Is<PublishEventRequest>(r => r.Data == "test data")), Times.Once);
         }
-
     }
 }
