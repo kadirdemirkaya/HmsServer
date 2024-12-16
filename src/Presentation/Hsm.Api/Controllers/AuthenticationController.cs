@@ -18,6 +18,13 @@ namespace Hsm.Api.Controllers
         }
 
         [HttpPost]
+        [Route("Test")]
+        public async Task<IActionResult> Test()
+        {
+            throw new ExampleException("adasdasdasdasdasddddddddddd");
+        }
+
+        [HttpPost]
         [Route("SignUp")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
         {
@@ -28,6 +35,12 @@ namespace Hsm.Api.Controllers
                 return Unauthorized();
 
             return Ok(loginCommandResponse.ApiResponseModel);
+        }
+    }
+    public class ExampleException : Exception
+    {
+        public ExampleException(string? message) : base(message)
+        {
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Hsm.Api.Extensions
+﻿using Hsm.Api.Middlewares;
+
+namespace Hsm.Api.Extensions
 {
     public static class ApiLayerExtension
     {
@@ -20,6 +22,8 @@
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthorization();
 

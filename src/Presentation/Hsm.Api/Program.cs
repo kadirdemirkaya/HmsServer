@@ -6,8 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.LoadApiLayerExtension()
                 .LoadApplicationLayerExtension()
-                .LoadPersistenceLayerExtension();
-
+                .LoadPersistenceLayerExtension(Hsm.Domain.AssemblyReference.Assembly);
 
 var app = builder.Build();
 
