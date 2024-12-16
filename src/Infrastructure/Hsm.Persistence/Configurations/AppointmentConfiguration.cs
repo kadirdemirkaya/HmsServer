@@ -15,10 +15,10 @@ namespace Hsm.Persistence.Configurations
 
             builder.Property(a => a.AppointmentTime).IsRequired();
 
-            builder.Property(a => a.CreatedDateUTC).IsRequired();
-            builder.Property(a => a.UpdatedDateUTC).IsRequired();
-            builder.Property(x => x.RowVersion).IsRowVersion();
-            builder.Property(x => x.IsActive).IsRowVersion();
+            builder.Property(c => c.CreatedDateUTC).IsRequired();
+            builder.Property(c => c.UpdatedDateUTC).IsRequired(false);
+            builder.Property(c => c.RowVersion).IsRowVersion();
+            builder.Property(c => c.IsActive).IsRequired();
 
             builder.HasOne(a => a.User)
                    .WithMany(u => u.Appointments)

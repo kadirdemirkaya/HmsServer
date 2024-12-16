@@ -19,9 +19,9 @@ namespace Hsm.Persistence.Configurations
             builder.Property(c => c.Specialty).IsRequired();
 
             builder.Property(c => c.CreatedDateUTC).IsRequired();
-            builder.Property(c => c.UpdatedDateUTC).IsRequired();
+            builder.Property(c => c.UpdatedDateUTC).IsRequired(false);
             builder.Property(c => c.RowVersion).IsRowVersion();
-            builder.Property(c => c.IsActive).IsRowVersion();
+            builder.Property(c => c.IsActive).IsRequired();
 
             builder.HasOne(d => d.AppUser)
                    .WithMany(u => u.Doctors)
