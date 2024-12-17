@@ -10,13 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Base.Repository" Version="1.1.2" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="EfCore.Repository" Version="1.1.2" />
     <PackageReference Include="EventFlux" Version="1.0.9" />
     <PackageReference Include="FlowValidate" Version="1.0.6" />
     <PackageReference Include="FluentAssertions" Version="8.0.0-alpha.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
   </ItemGroup>
