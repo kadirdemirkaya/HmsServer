@@ -1,9 +1,11 @@
 ﻿using EfCore.Repository.Extensions;
+using Hsm.Application.Abstractions;
 using Hsm.Application.Extensions;
 using Hsm.Domain.Entities.Base;
 using Hsm.Domain.Entities.Identity;
 using Hsm.Domain.Models.Options;
 using Hsm.Persistence.Context;
+using Hsm.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,8 @@ namespace Hsm.Persistence.Extensions
             services.AddDbContext<HsmDbContext>(opt => opt.UseSqlServer(sqlOptions.SqlConnection));
             
             services.EfCoreRepositoryServiceRegistration<IBaseEntity, HsmDbContext>(ServiceLifetime.Scoped, assembly);
+
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
