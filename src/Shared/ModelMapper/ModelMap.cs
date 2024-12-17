@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace ModelMapper
 {
-    public static class ModelMapper
+    public static class ModelMap
     {
         public static TTarget Map<TSource, TTarget>(TSource source)
             where TTarget : class, new()
