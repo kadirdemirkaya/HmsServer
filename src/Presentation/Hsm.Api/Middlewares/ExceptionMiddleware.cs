@@ -30,7 +30,7 @@ namespace Hsm.Api.Middlewares
                 _ => "Internal server error from error middleware"
             };
 
-            await httpContext.Response.WriteAsync(ApiResponseModel<ErrorDetail>.CreateFailure<ErrorDetail>(new ErrorDetail
+            await httpContext.Response.WriteAsync(ApiResponseModel<ErrorDetail>.CreateFailure(new ErrorDetail
             {
                 StatusCode = httpContext.Response.StatusCode,
                 Message = errorMessage
