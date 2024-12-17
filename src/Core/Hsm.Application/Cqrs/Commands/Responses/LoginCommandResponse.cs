@@ -8,5 +8,10 @@ namespace Hsm.Application.Cqrs.Commands.Responses
     public class LoginCommandResponse : IEventResponse
     {
         public ApiResponseModel<UserDto> ApiResponseModel { get; set; }
+
+        public LoginCommandResponse(ApiResponseModel<UserDto> apiResponseModel)
+        {
+            ApiResponseModel = apiResponseModel;
+        }
     }
 }

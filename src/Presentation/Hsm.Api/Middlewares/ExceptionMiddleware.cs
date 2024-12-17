@@ -1,7 +1,5 @@
-﻿using Hsm.Api.Controllers;
-using Hsm.Domain.Models.Error;
+﻿using Hsm.Domain.Models.Error;
 using Hsm.Domain.Models.Response;
-using Microsoft.AspNetCore.Http;
 using System.Net;
 
 namespace Hsm.Api.Middlewares
@@ -29,7 +27,6 @@ namespace Hsm.Api.Middlewares
 
             var errorMessage = ex switch
             {
-                ExampleException => "random bir hata aldik",
                 _ => "Internal server error from error middleware"
             };
 
