@@ -6,11 +6,10 @@ using HsmServer.UnitTest.Context;
 using HsmServer.UnitTest.Events;
 using HsmServer.UnitTest.Models;
 using HsmServer.UnitTest.Validators;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.DependencyInjection;
+using ModelMapper;
 using Moq;
 using Moq.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace HsmServer.UnitTest
@@ -57,8 +56,19 @@ namespace HsmServer.UnitTest
                 Age = 18,
                 Emails = ["kadirgmail.com"],
                 Name = "kadir",
-                UserBaskets = null,
-                UserCustomer = null
+                UserBaskets = new()
+                {
+                    new()
+                    {
+                        Count = 15,
+                        Name = "nurmagedrrrr"
+                    }
+                },
+                UserCustomer = new()
+                {
+                    Email = "Thomas@gmail.com",
+                    PhoneNumber = "05554443322"
+                }
             };
 
             var mockValidator = new Mock<UserValidator>();
@@ -77,8 +87,19 @@ namespace HsmServer.UnitTest
                 Age = 24,
                 Emails = ["kadir@gmail.com"],
                 Name = "suleyman",
-                UserBaskets = null,
-                UserCustomer = null
+                UserBaskets = new()
+                {
+                    new()
+                    {
+                        Count = 15,
+                        Name = "nurmagedrrrr"
+                    }
+                },
+                UserCustomer = new()
+                {
+                    Email = "Thomas@gmail.com",
+                    PhoneNumber = "05554443322"
+                }
             };
 
             var mockValidator = new Mock<UserValidator>();
@@ -324,6 +345,43 @@ namespace HsmServer.UnitTest
             Assert.True(personList.PageIndex == paginationSpecification.PageIndex);
             Assert.True(personList.TotalItems == fakePersons.Count());
         }
+
+        [Fact]
+        public void Map_ShouldReturnMappedModel_WhenModelMapperApply()
+        {
+            PersonDto personDto = new()
+            {
+                Age = 23,
+                Id = 4,
+                Name = "Alex"
+            };
+
+            var person = ModelMap.Map<PersonDto, Person>(personDto);
+
+            Assert.Equal(personDto.Name, person.Name);
+            Assert.Equal(personDto.Age, person.Age);
+            Assert.Equal(personDto.Id, person.Id);
+        }
+
+        [Fact]
+        public void Map_ShouldReturnMappedModel_WhenModelPropertiesAreDifferent()
+        {
+            SourceClass sourceClass = new()
+            {
+                Id = 23,
+                Name = "Alex",
+                LastName = "Souza",
+                Age = 24,
+            };
+
+            var targetClass = ModelMap.Map<SourceClass, TargetClass>(sourceClass);
+
+            Assert.Equal(sourceClass.Name, targetClass.Name);
+            Assert.Equal(sourceClass.LastName, targetClass.Surname);
+            Assert.Equal(sourceClass.Age, targetClass.Year);
+            Assert.Equal(sourceClass.Id, targetClass.Id);
+        }
+
     }
 
     public class PersonDto
@@ -331,5 +389,29 @@ namespace HsmServer.UnitTest
         public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
+    }
+
+    public class SourceClass
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        [PropertyMappingAttribute("GLastName")]
+        public string LastName { get; set; }
+
+        [PropertyMappingAttribute("Year")]
+        public int Age { get; set; }
+    }
+
+    public class TargetClass
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        [PropertyMappingAttribute("GLastName")]
+        public string Surname { get; set; }
+
+        [PropertyMappingAttribute("Year")]
+        public int Year { get; set; }
     }
 }
