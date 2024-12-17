@@ -22,22 +22,22 @@ namespace Hsm.Domain.Models.Response
             StatusCode = statusCode;
             CreatedAt = DateTime.UtcNow;
         }
-        public static ApiResponseModel<T> CreateSuccess<T>(T data)
+        public static ApiResponseModel<T> CreateSuccess(T data)
         {
             return new ApiResponseModel<T>(data, true, 200, null);
         }
 
-        public static ApiResponseModel<T> CreateFailure<T>(params string[] message)
+        public static ApiResponseModel<T> CreateFailure(params string[] message)
         {
             return new ApiResponseModel<T>(default(T), false, 400, message);
         }
 
-        public static ApiResponseModel<T> CreateNotFound<T>(params string[] message)
+        public static ApiResponseModel<T> CreateNotFound(params string[] message)
         {
             return new ApiResponseModel<T>(default(T), false, 404, message);
         }
 
-        public static ApiResponseModel<T> CreateServerError<T>(params string[] message)
+        public static ApiResponseModel<T> CreateServerError(params string[] message)
         {
             return new ApiResponseModel<T>(default(T), false, 500, message);
         }
