@@ -73,7 +73,7 @@ namespace ModelMapper
             => typeof(TType).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
         private static object GetMethod(Type sourceProperty, Type targetProperty, object sourceValue)
-            => typeof(ModelMapper)
+            => typeof(ModelMap)
                         .GetMethod("Map", BindingFlags.Public | BindingFlags.Static)!
                         .MakeGenericMethod(sourceProperty, targetProperty)
                         .Invoke(null, new[] { sourceValue })!;
