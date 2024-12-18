@@ -10,7 +10,8 @@ builder.Services.LoadApiLayerExtension()
 
 var app = builder.Build();
 
-app.LoadApiLayerApplicationExtension();
+app.LoadApiLayerApplicationExtension()
+   .LoadPersistenceLayerApplicationExtension();
 
 app.MapControllers();
 

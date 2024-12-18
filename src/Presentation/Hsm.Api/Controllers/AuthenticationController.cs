@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hsm.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : BaseController
     {
         private readonly EventBus _eventBus;
 
@@ -16,6 +14,7 @@ namespace Hsm.Api.Controllers
         {
             _eventBus = eventBus;
         }
+
 
         [HttpPost]
         [Route("SignUp")]

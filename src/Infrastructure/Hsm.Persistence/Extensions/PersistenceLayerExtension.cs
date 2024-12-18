@@ -6,9 +6,12 @@ using Hsm.Domain.Entities.Identity;
 using Hsm.Domain.Models.Options;
 using Hsm.Persistence.Context;
 using Hsm.Persistence.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace Hsm.Persistence.Extensions
@@ -20,26 +23,51 @@ namespace Hsm.Persistence.Extensions
             SqlServerOptions sqlOptions = services.GetOptions<SqlServerOptions>("SqlServerOptions");
 
             services.AddDbContext<HsmDbContext>(opt => opt.UseSqlServer(sqlOptions.SqlConnection));
-            
+
             services.EfCoreRepositoryServiceRegistration<IBaseEntity, HsmDbContext>(ServiceLifetime.Scoped, assembly);
 
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
-                opt.Password.RequiredLength = 10;
-                opt.Password.RequireNonAlphanumeric = true;
                 opt.Password.RequiredUniqueChars = 2;
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(60);
                 opt.Lockout.MaxFailedAccessAttempts = 3;
                 opt.User.RequireUniqueEmail = true;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 7;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequiredUniqueChars = 1;
 
             })
+                .AddUserManager<UserManager<AppUser>>()
                 .AddRoleManager<RoleManager<AppRole>>()
+                .AddSignInManager<SignInManager<AppUser>>()
                 .AddEntityFrameworkStores<HsmDbContext>()
                 .AddDefaultTokenProviders();
 
             return services;
+        }
+
+        public static IApplicationBuilder LoadPersistenceLayerApplicationExtension(this IApplicationBuilder app)
+        {
+            //using (var scope = app.ApplicationServices.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    try
+            //    {
+            //        HsmSeedDb.SeedAsync(services).GetAwaiter().GetResult();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = services.GetRequiredService<ILogger<HsmDbContext>>();
+            //        logger.LogError(ex, "An error occurred while seeding the database.");
+            //    }
+            //}
+
+            return app;
         }
     }
 }
