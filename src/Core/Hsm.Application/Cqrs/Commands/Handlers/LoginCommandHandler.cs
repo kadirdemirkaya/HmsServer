@@ -28,7 +28,7 @@ namespace Hsm.Application.Cqrs.Commands.Handlers
             if (identityResult.IsLockedOut)
                 return new LoginCommandResponse(ApiResponseModel<UserDto>.CreateNotFound("User too many wrong entries"));
 
-            string token = _jwtTokenService.GenerateToken(appUser);
+            string token = await _jwtTokenService.GenerateToken(appUser);
 
             return new LoginCommandResponse(ApiResponseModel<UserDto>.CreateSuccess(new UserDto()
             {

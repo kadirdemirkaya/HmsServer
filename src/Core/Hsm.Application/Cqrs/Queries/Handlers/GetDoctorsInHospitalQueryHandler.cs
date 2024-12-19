@@ -21,8 +21,6 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
         {
             IReadRepository<Hospital> _readRepository = _unitOfWork.GetReadRepository();
 
-            ITable table = _unitOfWork.GetTable();
-
             Hospital? hospital = await _readRepository.GetAsync(h => h.Id == @event.HospitalId);
 
             if (hospital is null)
