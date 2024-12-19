@@ -1,4 +1,6 @@
 ﻿using Hsm.Api.Middlewares;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace Hsm.Api.Extensions
 {
@@ -10,7 +12,14 @@ namespace Hsm.Api.Extensions
 
             services.AddEndpointsApiExplorer();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             return services;
         }

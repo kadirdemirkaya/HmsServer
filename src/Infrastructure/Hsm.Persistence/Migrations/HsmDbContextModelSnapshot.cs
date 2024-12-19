@@ -526,7 +526,7 @@ namespace Hsm.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Hsm.Domain.Entities.Entities.Address", "Address", b1 =>
+                    b.OwnsOne("Hsm.Domain.Entities.Entities.Hospital.Address#Hsm.Domain.Entities.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("HospitalId")
                                 .HasColumnType("uniqueidentifier");
@@ -553,7 +553,7 @@ namespace Hsm.Persistence.Migrations
 
                             b1.HasKey("HospitalId");
 
-                            b1.ToTable("Hospitals");
+                            b1.ToTable("Hospitals", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("HospitalId");
