@@ -1,4 +1,6 @@
-﻿namespace Hsm.Domain.Models.Page
+﻿using EventFlux;
+
+namespace Hsm.Domain.Models.Page
 {
     public class PageResponse<T>(IList<T> data, Page pageInfo)
     {

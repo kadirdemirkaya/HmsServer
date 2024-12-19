@@ -1,5 +1,6 @@
 ﻿using Hsm.Domain.Entities.Base;
 using Hsm.Domain.Entities.Identity;
+using ModelMapper;
 
 namespace Hsm.Domain.Entities.Entities
 {
@@ -11,6 +12,8 @@ namespace Hsm.Domain.Entities.Entities
         public string Schedule { get; set; }
 
         public Guid HospitalId { get; set; }
+
+        [PropertyMapping("HospitalModel")]
         public Hospital Hospital { get; set; }
 
 

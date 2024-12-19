@@ -1,4 +1,5 @@
 ﻿using Hsm.Domain.Entities.Base;
+using ModelMapper;
 
 namespace Hsm.Domain.Entities.Entities
 {
@@ -9,6 +10,8 @@ namespace Hsm.Domain.Entities.Entities
         public string ContactNumber { get; set; }
 
         public Guid CityId { get; set; }
+
+        [PropertyMapping("CityModel")]
         public City City { get; set; }
 
         public ICollection<Doctor> Doctors { get; set; }

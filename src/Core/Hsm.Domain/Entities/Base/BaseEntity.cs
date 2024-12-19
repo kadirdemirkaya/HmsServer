@@ -9,6 +9,8 @@ namespace Hsm.Domain.Entities.Base
         public virtual DateTime CreatedDateUTC { get; set; } = DateTime.UtcNow;
         public virtual DateTime? UpdatedDateUTC { get; set; }
         public virtual bool IsActive { get; set; } = true;
+
+        [Timestamp]
         public virtual byte[] RowVersion { get; set; } = null!;
 
 
