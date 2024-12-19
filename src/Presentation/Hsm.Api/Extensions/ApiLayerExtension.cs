@@ -12,6 +12,11 @@ namespace Hsm.Api.Extensions
 
             services.AddEndpointsApiExplorer();
 
+            services.AddRouting(opt =>
+            {
+                opt.LowercaseUrls = true;
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
