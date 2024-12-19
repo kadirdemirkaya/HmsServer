@@ -34,22 +34,33 @@ namespace ModelMapper
 
                 if (targetProp == null || !targetProp.CanWrite) continue;
 
+                if (sourceProp.PropertyType == typeof(byte[]))
+                {
+                    var sourceValue = sourceProp.GetValue(source) as byte[];
+                    if (sourceValue != null)
+                    {
+                        targetProp.SetValue(target, sourceValue);
+                    }
+                }
+
                 if (typeof(IEnumerable).IsAssignableFrom(sourceProp.PropertyType) && sourceProp.PropertyType != typeof(string))
                 {
                     var sourceList = (IEnumerable)sourceProp.GetValue(source);
                     if (sourceList == null) continue;
 
-                    var targetList = (IList)Activator.CreateInstance(targetProp.PropertyType)!;
-                    var targetListItemType = targetProp.PropertyType.GetGenericArguments().FirstOrDefault();
-
-                    foreach (var item in sourceList)
+                    if (targetProp.PropertyType.IsGenericType && targetProp.PropertyType.GetGenericTypeDefinition() == typeof(IList<>))
                     {
-                        var mappedItem = GetMethod(item.GetType(), targetListItemType, item);
+                        var targetList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(targetProp.PropertyType.GetGenericArguments()))!;
+                        var targetListItemType = targetProp.PropertyType.GetGenericArguments().FirstOrDefault();
 
-                        targetList.Add(mappedItem);
+                        foreach (var item in sourceList)
+                        {
+                            var mappedItem = GetMethod(item.GetType(), targetListItemType, item);
+                            targetList.Add(mappedItem);
+                        }
+
+                        targetProp.SetValue(target, targetList);
                     }
-
-                    targetProp.SetValue(target, targetList);
                 }
                 else if (sourceProp.PropertyType.IsClass && sourceProp.PropertyType != typeof(string))
                 {
