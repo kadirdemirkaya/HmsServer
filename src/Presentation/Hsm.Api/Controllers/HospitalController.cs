@@ -7,10 +7,12 @@ using Hsm.Domain.Models.Dtos.Doctor;
 using Hsm.Domain.Models.Dtos.Hospital;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hsm.Api.Controllers
 {
+    [Authorize(Roles = "Admin,Manager,User")]
     public class HospitalController(EventBus _eventBus) : BaseController
     {
         /// <summary>

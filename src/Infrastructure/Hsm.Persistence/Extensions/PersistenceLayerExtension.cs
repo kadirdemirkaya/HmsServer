@@ -6,13 +6,14 @@ using Hsm.Domain.Entities.Identity;
 using Hsm.Domain.Models.Options;
 using Hsm.Persistence.Context;
 using Hsm.Persistence.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace Hsm.Persistence.Extensions
 {
@@ -21,6 +22,7 @@ namespace Hsm.Persistence.Extensions
         public static IServiceCollection LoadPersistenceLayerExtension(this IServiceCollection services, Assembly assembly)
         {
             SqlServerOptions sqlOptions = services.GetOptions<SqlServerOptions>("SqlServerOptions");
+            JwtOptions jwtOptions = services.GetOptions<JwtOptions>("JwtOptions");
 
             services.AddDbContext<HsmDbContext>(opt => opt.UseSqlServer(sqlOptions.SqlConnection));
 
@@ -47,6 +49,37 @@ namespace Hsm.Persistence.Extensions
                 .AddSignInManager<SignInManager<AppUser>>()
                 .AddEntityFrameworkStores<HsmDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine("Token successfully validated");
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
             return services;
         }
