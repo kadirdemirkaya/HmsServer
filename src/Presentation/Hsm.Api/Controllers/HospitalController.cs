@@ -98,6 +98,5 @@ namespace Hsm.Api.Controllers
 
             return Ok(updateHospitalCommandResponse.ApiResponseModel);
         }
-
     }
 }

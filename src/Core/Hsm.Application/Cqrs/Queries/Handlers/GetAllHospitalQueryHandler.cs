@@ -5,7 +5,6 @@ using Hsm.Application.Cqrs.Queries.Requests;
 using Hsm.Application.Cqrs.Queries.Responses;
 using Hsm.Application.Extensions;
 using Hsm.Domain.Entities.Entities;
-using Hsm.Domain.Models.Dtos.Doctor;
 using Hsm.Domain.Models.Dtos.Hospital;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
