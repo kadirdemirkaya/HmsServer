@@ -12,5 +12,30 @@ namespace Hsm.Domain.Entities.Entities
 
         public AppUser User { get; set; }
         public WorkSchedule WorkSchedule { get; set; }
+
+        public Appointment()
+        {
+
+        }
+
+        public Appointment(DateTime appointmentTime, Guid userId, Guid workScheduleId)
+        {
+            CreateId();
+            SetAppointmentTime(appointmentTime)
+           .SetUserId(userId)
+           .SetWorkScheduleId(workScheduleId);
+        }
+
+        public Appointment(Guid id, DateTime appointmentTime, Guid userId, Guid workScheduleId)
+        {
+            SetId(id);
+            SetAppointmentTime(appointmentTime)
+           .SetUserId(userId)
+           .SetWorkScheduleId(workScheduleId);
+        }
+
+        public Appointment SetAppointmentTime(DateTime appointmentTime) { AppointmentTime = appointmentTime; return this; }
+        public Appointment SetUserId(Guid userId) { UserId = userId; return this; }
+        public Appointment SetWorkScheduleId(Guid workScheduleId) { WorkScheduleId = workScheduleId; return this; }
     }
 }

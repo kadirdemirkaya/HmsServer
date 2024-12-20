@@ -23,6 +23,7 @@ namespace Hsm.Domain.Entities.Entities
 
         public ICollection<WorkSchedule> WorkSchedules { get; private set; }
 
+
         public Doctor()
         {
 
@@ -53,16 +54,16 @@ namespace Hsm.Domain.Entities.Entities
         public static Doctor Create(Guid id, string firstName, string lastName, string specialty, string schedule, Guid appUserId)
             => new(id, firstName, lastName, specialty, schedule, appUserId);
 
+        public void AddWorkScheduleToDoctor(WorkSchedule workSchedule)
+        {
+            WorkSchedules.Add(workSchedule);
+        }
+
         public Doctor SetAppUserId(Guid appUserId) { AppUserId = appUserId; return this; }
         public Doctor SetFirstName(string firstName) { FirstName = firstName; return this; }
         public Doctor SetLastName(string lastName) { LastName = lastName; return this; }
         public Doctor SetSpecialty(string specialty) { Specialty = specialty; return this; }
         public Doctor SetSchedule(string schedule) { Schedule = schedule; return this; }
-        public Doctor SetHospital(Hospital hospital)
-        {
-
-
-            return this;
-        }
+        public Doctor SetHospital(Hospital hospital) { Hospital = hospital; return this; }
     }
 }
