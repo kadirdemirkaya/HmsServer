@@ -1,5 +1,6 @@
 ﻿using EventFlux;
 using FlowValidate;
+using Hsm.Application.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hsm.Application.Extensions
@@ -11,6 +12,8 @@ namespace Hsm.Application.Extensions
             services.AddEventBus(AssemblyReference.Assemblies);
 
             services.FluentVal(AssemblyReference.Assembly);
+
+            services.AddScoped(typeof(GenericNotFoundFilter<>));
 
             return services;
         }

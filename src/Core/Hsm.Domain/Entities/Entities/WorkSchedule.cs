@@ -1,5 +1,6 @@
 ﻿using Hsm.Domain.Entities.Base;
 using Hsm.Domain.Models.Dtos.City;
+using ModelMapper;
 using System.Xml.Linq;
 
 namespace Hsm.Domain.Entities.Entities
@@ -11,8 +12,11 @@ namespace Hsm.Domain.Entities.Entities
         public DateTime EndDate { get; set; }
 
         public Guid DoctorId { get; set; }
+
+        [PropertyMapping("DoctorModel")]
         public Doctor Doctor { get; set; }
 
+        [PropertyMapping("AppointmentModel")]
         public ICollection<Appointment> Appointments { get; set; }
 
         public WorkSchedule()

@@ -16,7 +16,7 @@ namespace Hsm.Application.Filters
                 throw new Exception("The input is invalid. Please try to use valid id");
             }
 
-            var id = (int)value!;
+            var id = (Guid)value!;
             var entity = await _unitOfWork.GetReadRepository().GetByIdAsync(id);
 
             if (entity == null)
