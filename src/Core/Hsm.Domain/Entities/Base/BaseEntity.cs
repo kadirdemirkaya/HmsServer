@@ -11,11 +11,12 @@ namespace Hsm.Domain.Entities.Base
         public virtual bool IsActive { get; private set; } = true;
 
         [Timestamp]
-        public virtual byte[] RowVersion { get; set; } = null!;
+        public virtual byte[] RowVersion { get; private set; } = null!;
 
 
         public BaseEntity()
         {
+            CreateId();
             IsActive = false;
             CreatedDateUTC = DateTime.UtcNow;
             UpdatedDateUTC = null;
@@ -29,7 +30,17 @@ namespace Hsm.Domain.Entities.Base
             UpdatedDateUTC = null;
         }
 
-        public void CreateId() { Id = Guid.NewGuid(); }
+        public Guid GetId() { return Id; }
+        public bool GetIsActive() { return IsActive; }
+        public void CreateId()
+        {
+            if (Id == Guid.Empty)
+            {
+                Id = Guid.NewGuid();
+            }
+        }
+
+        public BaseEntity SetRowVersion(byte[] rowVersion) { RowVersion = rowVersion; return this; }
         public BaseEntity SetId(Guid id) { Id = id; return this; }
         public BaseEntity SetIsActive(bool isActive) { IsActive = isActive; return this; }
         public BaseEntity SetCreatedDateUTC(DateTime createdDateUTC) { CreatedDateUTC = createdDateUTC; return this; }

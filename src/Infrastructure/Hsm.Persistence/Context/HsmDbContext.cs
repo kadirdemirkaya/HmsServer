@@ -1,21 +1,13 @@
-﻿using Base.Repository.Helpers;
-using Hsm.Domain.Entities.Base;
+﻿using Hsm.Domain.Entities.Base;
 using Hsm.Domain.Entities.Entities;
 using Hsm.Domain.Entities.Identity;
-using Hsm.Domain.Models.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace Hsm.Persistence.Context
 {
     public class HsmDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
-        public HsmDbContext()
-        {
-            
-        }
         public HsmDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -35,18 +27,6 @@ namespace Hsm.Persistence.Context
             builder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
             base.OnModelCreating(builder);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var configuration = new ConfigurationBuilder()
-               .SetBasePath($"{Directory.GetCurrentDirectory()}{"/../../Presentation/Hsm.Api"}")
-               .AddJsonFile("appsettings.json")
-               .Build();
-            SqlServerOptions sqlOptions = configuration.GetOptions<SqlServerOptions>("SqlServerOptions");
-            optionsBuilder.UseSqlServer(sqlOptions.SqlConnection);
-
-            base.OnConfiguring(optionsBuilder);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -1,0 +1,16 @@
+[
+  {
+    "Id": "a001e4fd-e53d-4e07-ae03-c8126c0a7cae",
+    "Name": "City Hospital",
+    "Address": {
+      "Street": "123 Main St",
+      "City": "Metropolis",
+      "PostalCode": "12345",
+      "Country": "CountryName"
+    },
+    "ContactNumber": "1234567890",
+    "City": {
+      "Name": "Metropolis"
+    }
+  }
+]

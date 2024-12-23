@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hsm.Api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Authorize(Roles = "Admin,User")]
-    public class AppointmentController(EventBus _eventBus) : BaseController
+    public class AppointmentController(EventBus _eventBus) : BaseAuthController
     {
         [HttpPost]
         [Route("take-appointment")]

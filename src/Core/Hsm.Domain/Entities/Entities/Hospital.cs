@@ -1,14 +1,13 @@
-﻿ using Hsm.Domain.Entities.Base;
+﻿using Hsm.Domain.Entities.Base;
 using ModelMapper;
-using System.Net.Http.Headers;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.Loader;
 
 namespace Hsm.Domain.Entities.Entities
 {
     public class Hospital : BaseEntity
     {
         public string Name { get; private set; }
+
+        [PropertyMapping("Address")]
         public Address Address { get; private set; }
         public string ContactNumber { get; private set; }
 
@@ -17,7 +16,9 @@ namespace Hsm.Domain.Entities.Entities
         [PropertyMapping("CityModel")]
         public City City { get; private set; }
 
-        public ICollection<Doctor> Doctors { get; private set; }
+        public ICollection<Doctor> Doctors { get; private set; } = new List<Doctor>();
+
+        public ICollection<Clinical> Clinicals { get; private set; } = new List<Clinical>();
 
 
         public Hospital()
@@ -34,6 +35,15 @@ namespace Hsm.Domain.Entities.Entities
            .SetCityId(cityId);
         }
 
+        public Hospital(string name, Address address, string contactNumber, City city)
+        {
+            CreateId();
+            SetName(name)
+           .SetAddress(address)
+           .SetContactNumber(contactNumber)
+           .SetCity(city);
+        }
+
         public Hospital(Guid id, string name, Address address, string contactNumber, Guid cityId) : base(id)
         {
             SetId(id);
@@ -45,6 +55,9 @@ namespace Hsm.Domain.Entities.Entities
 
         public static Hospital Create(string name, Address address, string contactNumber, Guid cityId)
             => new(name, address, contactNumber, cityId);
+
+        public static Hospital Create(string name, Address address, string contactNumber, City city)
+           => new(name, address, contactNumber, city);
 
         public static Hospital Create(Guid id, string name, Address address, string contactNumber, Guid cityId)
           => new(id, name, address, contactNumber, cityId);
@@ -58,6 +71,7 @@ namespace Hsm.Domain.Entities.Entities
         public Hospital SetAddress(Address address) { Address = address; return this; }
         public Hospital SetContactNumber(string contactNumber) { ContactNumber = contactNumber; return this; }
         public Hospital SetCityId(Guid cityId) { CityId = cityId; return this; }
+        public Hospital SetCity(City city) { City = city; return this; }
 
     }
 }

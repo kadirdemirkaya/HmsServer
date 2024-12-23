@@ -5,12 +5,14 @@ using Hsm.Domain.Entities.Base;
 using Hsm.Domain.Entities.Identity;
 using Hsm.Domain.Models.Options;
 using Hsm.Persistence.Context;
+using Hsm.Persistence.Repository;
 using Hsm.Persistence.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
@@ -29,6 +31,8 @@ namespace Hsm.Persistence.Extensions
             services.EfCoreRepositoryServiceRegistration<IBaseEntity, HsmDbContext>(ServiceLifetime.Scoped, assembly);
 
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
@@ -86,19 +90,19 @@ namespace Hsm.Persistence.Extensions
 
         public static IApplicationBuilder LoadPersistenceLayerApplicationExtension(this IApplicationBuilder app)
         {
-            //using (var scope = app.ApplicationServices.CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
-            //    try
-            //    {
-            //        HsmSeedDb.SeedAsync(services).GetAwaiter().GetResult();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        var logger = services.GetRequiredService<ILogger<HsmDbContext>>();
-            //        logger.LogError(ex, "An error occurred while seeding the database.");
-            //    }
-            //}
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    HsmSeedDb.SeedAsync(services).GetAwaiter().GetResult();
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<HsmDbContext>>();
+                    logger.LogError(ex, "An error occurred while seeding the database.");
+                }
+            }
 
             return app;
         }

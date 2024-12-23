@@ -17,7 +17,7 @@ namespace Hsm.Api.Controllers
 
 
         [HttpPost]
-        [Route("SignUp")]
+        [Route("SignIn")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
         {
             LoginCommandRequest loginCommandRequest = new(userLoginDto);

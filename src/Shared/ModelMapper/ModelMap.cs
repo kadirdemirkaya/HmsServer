@@ -43,6 +43,35 @@ namespace ModelMapper
                     }
                 }
 
+                if (typeof(ICollection).IsAssignableFrom(sourceProp.PropertyType) && sourceProp.PropertyType != typeof(string))
+                {
+                    var sourceList = (IEnumerable)sourceProp.GetValue(source);
+                    if (sourceList == null) continue;
+
+                    var mappedName = sourceProp.GetCustomAttribute<PropertyMappingAttribute>()?.MappedName;
+                    if (mappedName != null)
+                    {
+                        targetProp = targetProps.FirstOrDefault(p =>
+                            p.GetCustomAttribute<PropertyMappingAttribute>()?.MappedName == mappedName);
+                    }
+
+                    if (targetProp == null || !targetProp.CanWrite) continue;
+
+                    if (targetProp.PropertyType.IsGenericType && targetProp.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>))
+                    {
+                        var targetCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(targetProp.PropertyType.GetGenericArguments()))!;
+                        var targetItemType = targetProp.PropertyType.GetGenericArguments().FirstOrDefault();
+
+                        foreach (var item in sourceList)
+                        {
+                            var mappedItem = GetMethod(item.GetType(), targetItemType, item);
+                            targetCollection.Add(mappedItem);
+                        }
+
+                        targetProp.SetValue(target, targetCollection);
+                    }
+                }
+
                 if (typeof(IEnumerable).IsAssignableFrom(sourceProp.PropertyType) && sourceProp.PropertyType != typeof(string))
                 {
                     var sourceList = (IEnumerable)sourceProp.GetValue(source);

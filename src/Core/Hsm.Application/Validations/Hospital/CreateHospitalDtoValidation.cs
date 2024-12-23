@@ -16,7 +16,7 @@ namespace Hsm.Application.Validations.Hospital
             RuleFor(h => h.Name)
                  .IsNotEmpty().WithMessage("Name property is must not null");
 
-            ValidateNested(h => h.Address, new AddressValidation());
+            ValidateNested(h => h.AddressDto, new AddressValidation());
 
             ValidateNested(h => h.CreateCityDto, new CreateCityDtoValidation());
         }
