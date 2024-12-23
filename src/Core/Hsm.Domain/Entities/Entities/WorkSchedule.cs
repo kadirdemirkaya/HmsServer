@@ -1,23 +1,22 @@
 ﻿using Hsm.Domain.Entities.Base;
-using Hsm.Domain.Models.Dtos.City;
+using Hsm.Domain.Models.Dtos.Appointment;
 using ModelMapper;
-using System.Xml.Linq;
 
 namespace Hsm.Domain.Entities.Entities
 {
     public class WorkSchedule : BaseEntity
     {
-        public string Name { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string Name { get; private set; }
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
 
-        public Guid DoctorId { get; set; }
+        public Guid DoctorId { get; private set; }
 
         [PropertyMapping("DoctorModel")]
-        public Doctor Doctor { get; set; }
+        public Doctor Doctor { get; private set; }
 
         [PropertyMapping("AppointmentModel")]
-        public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<Appointment> Appointments { get; private set; } = new List<Appointment>();
 
         public WorkSchedule()
         {
@@ -52,9 +51,34 @@ namespace Hsm.Domain.Entities.Entities
             Appointments.Add(appointment);
         }
 
+        public void AddAppointmentToWorkSchedule(List<Appointment> appointments)
+        {
+            foreach (var appointment in appointments)
+            {
+                Appointments.Add(appointment);
+            }
+        }
+
+        public void UpdateAppointment(List<AppointmentModel> appointmentModels)
+        {
+            foreach (var appointmentModel in appointmentModels)
+            {
+                var existingAppointment = Appointments.FirstOrDefault(a => a.Id == appointmentModel.Id);
+
+                if (existingAppointment != null)
+                {
+                    existingAppointment.SetRowVersion(appointmentModel.RowVersion);
+                    existingAppointment.SetIsActive(appointmentModel.IsActive);
+                    existingAppointment.SetAppointmentTime(appointmentModel.AppointmentTime);
+                    existingAppointment.SetUserId(appointmentModel.UserId);
+                }
+            }
+        }
+
         public WorkSchedule SetName(string name) { Name = name; return this; }
         public WorkSchedule SetStartDate(DateTime startDate) { StartDate = startDate; return this; }
         public WorkSchedule SetEndDate(DateTime endDate) { EndDate = endDate; return this; }
         public WorkSchedule SetDoctorId(Guid doctorId) { DoctorId = doctorId; return this; }
+        public WorkSchedule SetDoctor(Doctor doctor) { Doctor = doctor; return this; }
     }
 }

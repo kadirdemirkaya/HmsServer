@@ -17,6 +17,6 @@ namespace Hsm.Domain.Models.Dtos.WorkSchedule
         public DoctorModel DoctorModel { get; set; }
 
         [PropertyMapping("AppointmentModel")]
-        public List<AppointmentModel> AppointmentModels { get; set; }
+        public ICollection<AppointmentModel> AppointmentModels { get; set; }
     }
 }

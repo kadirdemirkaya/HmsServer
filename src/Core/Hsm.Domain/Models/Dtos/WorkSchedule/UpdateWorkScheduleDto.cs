@@ -11,6 +11,7 @@ namespace Hsm.Domain.Models.Dtos.WorkSchedule
         public DateTime EndDate { get; set; }
         public byte[] RowVersion { get; set; } = null!;
         public bool IsActive { get; set; }
+        public Guid DoctorId { get; set; }
 
 
         [PropertyMapping("AppointmentModel")]

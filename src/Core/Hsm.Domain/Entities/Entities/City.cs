@@ -6,7 +6,7 @@ namespace Hsm.Domain.Entities.Entities
     {
         public string Name { get; set; }
 
-        public ICollection<Hospital> Hospitals { get; set; }
+        public ICollection<Hospital> Hospitals { get; set; } = new List<Hospital>();
 
         public City()
         {

@@ -9,7 +9,7 @@ namespace Hsm.Domain.Entities.Entities
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Specialty { get; private set; }
-        public string Schedule { get; private set; }
+        public string Schedule { get; private set; } = "none";
 
         public Guid HospitalId { get; private set; }
 
@@ -21,7 +21,7 @@ namespace Hsm.Domain.Entities.Entities
         public AppUser AppUser { get; private set; }
 
 
-        public ICollection<WorkSchedule> WorkSchedules { get; private set; }
+        public ICollection<WorkSchedule> WorkSchedules { get; private set; } = new List<WorkSchedule>();
 
 
         public Doctor()

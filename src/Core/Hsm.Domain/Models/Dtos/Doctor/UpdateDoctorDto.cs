@@ -1,4 +1,6 @@
-﻿namespace Hsm.Domain.Models.Dtos.Doctor
+﻿using Hsm.Domain.Models.Dtos.Hospital;
+
+namespace Hsm.Domain.Models.Dtos.Doctor
 {
     public class UpdateDoctorDto
     {
