@@ -28,6 +28,10 @@ namespace Hsm.Persistence.Configurations
             builder.HasMany(d => d.Doctors)
                    .WithOne(w => w.Hospital)
                    .HasForeignKey(w => w.HospitalId);
+
+            builder.HasMany(c => c.Clinicals)
+                   .WithOne(h => h.Hospital)
+                   .HasForeignKey(c => c.HospitalId);
         }
     }
 }
