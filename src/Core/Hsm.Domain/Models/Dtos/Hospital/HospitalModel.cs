@@ -1,5 +1,5 @@
-﻿using Hsm.Domain.Models.Dtos.Address;
-using Hsm.Domain.Models.Dtos.City;
+﻿using Hsm.Domain.Models.Dtos.City;
+using Hsm.Domain.Models.Dtos.Clinic;
 using ModelMapper;
 
 namespace Hsm.Domain.Models.Dtos.Hospital
@@ -8,7 +8,9 @@ namespace Hsm.Domain.Models.Dtos.Hospital
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public AddressDto AddressDto { get; set; }
+
+        [PropertyMapping("Address")]
+        public Hsm.Domain.Entities.Entities.Address Address { get; set; }
         public string ContactNumber { get; set; }
         public byte[] RowVersion { get; set; } = null!;
         public bool IsActive { get; set; }
@@ -16,5 +18,8 @@ namespace Hsm.Domain.Models.Dtos.Hospital
 
         [PropertyMapping("CityModel")]
         public CityModel CityModel { get; set; }
+
+        [PropertyMapping("ClinicalModel")]
+        public List<ClinicalModel> ClinicalModels { get; set; }
     }
 }

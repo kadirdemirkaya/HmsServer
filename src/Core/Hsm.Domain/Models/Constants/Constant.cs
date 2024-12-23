@@ -11,6 +11,7 @@
         {
             public const string Appointments = "Appointment";
             public const string Cities = "Cities";
+            public const string Clinical = "Clinicals";
             public const string Doctors = "Doctors";
             public const string Hospitals = "Hospitals";
             public const string Notifications = "Notifications";

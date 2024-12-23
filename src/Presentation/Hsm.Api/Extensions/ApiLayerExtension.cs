@@ -20,6 +20,7 @@ namespace Hsm.Api.Extensions
                 opt.LowercaseUrls = true;
             });
 
+            services.AddCors();
 
             services.AddSwaggerGen(c =>
             {
@@ -64,6 +65,11 @@ namespace Hsm.Api.Extensions
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hsm.Api");
+            });
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             });
 
             app.UseHttpsRedirection();

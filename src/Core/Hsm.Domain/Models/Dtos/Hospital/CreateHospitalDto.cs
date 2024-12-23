@@ -9,6 +9,7 @@ namespace Hsm.Domain.Models.Dtos.Hospital
     {
 
         public string Name { get; set; }
+
         [PropertyMapping("Address")]
         public AddressDto AddressDto { get; set; }
         public string ContactNumber { get; set; }

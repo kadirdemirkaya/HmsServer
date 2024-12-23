@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
@@ -46,6 +47,8 @@ namespace Hsm.Persistence.Extensions
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequiredUniqueChars = 1;
+                opt.User.AllowedUserNameCharacters =
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ğüşıöçĞÜŞİÖÇ-._@";
 
             })
                 .AddUserManager<UserManager<AppUser>>()

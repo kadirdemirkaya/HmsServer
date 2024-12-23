@@ -5,6 +5,7 @@ using Hsm.Application.Cqrs.Queries.Requests;
 using Hsm.Application.Cqrs.Queries.Responses;
 using Hsm.Application.Filters;
 using Hsm.Domain.Entities.Entities;
+using Hsm.Domain.Models.Dtos.Appointment;
 using Hsm.Domain.Models.Dtos.WorkSchedule;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
@@ -54,5 +55,13 @@ namespace Hsm.Api.Controllers
 
             return Ok(updateWorkScheduleCommandResponse.ApiResponseModel);
         }
+
+
+        //[HttpGet]
+        //[Route("search-appointment")]
+        //public async Task<ActionResult<ApiResponseModel<PageResponse<>>> SearchAppointment([FromBody] SearchAppointmentDto searchAppointmentDto)
+        //{
+
+        //}
     }
 }
