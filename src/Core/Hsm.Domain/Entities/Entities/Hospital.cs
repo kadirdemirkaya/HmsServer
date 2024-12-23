@@ -18,6 +18,7 @@ namespace Hsm.Domain.Entities.Entities
 
         public ICollection<Doctor> Doctors { get; private set; } = new List<Doctor>();
 
+        [PropertyMapping("ClinicalModel")]
         public ICollection<Clinical> Clinicals { get; private set; } = new List<Clinical>();
 
 
@@ -65,6 +66,10 @@ namespace Hsm.Domain.Entities.Entities
         public void AddDoctorToHospital(Doctor doctor)
         {
             Doctors.Add(doctor);
+        }
+        public void AddClinicalToHospital(Clinical clinical)
+        {
+            Clinicals.Add(clinical);
         }
 
         public Hospital SetName(string name) { Name = name; return this; }

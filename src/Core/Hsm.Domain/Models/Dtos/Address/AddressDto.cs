@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hsm.Domain.Models.Dtos.Address
+﻿namespace Hsm.Domain.Models.Dtos.Address
 {
     public class AddressDto
     {
         public string Street { get; set; }
+        public string District { get; set; } // il.e
         public string City { get; set; }
         public string State { get; set; }
         public string PostalCode { get; set; }
