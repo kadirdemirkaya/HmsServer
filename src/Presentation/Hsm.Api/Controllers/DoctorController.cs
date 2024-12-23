@@ -3,6 +3,8 @@ using Hsm.Application.Cqrs.Commands.Requests;
 using Hsm.Application.Cqrs.Commands.Responses;
 using Hsm.Application.Cqrs.Queries.Requests;
 using Hsm.Application.Cqrs.Queries.Responses;
+using Hsm.Application.Filters;
+using Hsm.Domain.Entities.Entities;
 using Hsm.Domain.Models.Dtos.Doctor;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
@@ -12,9 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hsm.Api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Authorize(Roles = "Admin")]
-    public class DoctorController(EventBus _eventBus) : BaseController
+    public class DoctorController(EventBus _eventBus) : BaseAuthController
     {
         /// <summary>
         /// This endpoint for create doctor
@@ -41,6 +42,7 @@ namespace Hsm.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("delete-doctor/{id}")]
+        [ServiceFilter(typeof(GenericNotFoundFilter<Doctor>))]
         public async Task<IActionResult> DeleteDoctor([FromQuery] Guid id)
         {
             DeleteDoctorCommandRequest deleteDoctorCommandRequest = new(id);
@@ -68,6 +70,7 @@ namespace Hsm.Api.Controllers
 
         [HttpPut]
         [Route("update-doctor")]
+        [ServiceFilter(typeof(GenericSpecificNotFoundFilter<Doctor>))]
         public async Task<IActionResult> UpdateDoctor([FromBody] UpdateDoctorDto updateDoctorDto)
         {
             UpdateDoctorCommandRequest updateDoctorCommandRequest = new(updateDoctorDto);

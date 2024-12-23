@@ -5,7 +5,6 @@ using Hsm.Application.Cqrs.Queries.Requests;
 using Hsm.Application.Cqrs.Queries.Responses;
 using Hsm.Application.Filters;
 using Hsm.Domain.Entities.Entities;
-using Hsm.Domain.Models.Dtos.Appointment;
 using Hsm.Domain.Models.Dtos.WorkSchedule;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
@@ -13,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hsm.Api.Controllers
 {
-    public class WorkScheduleController(EventBus _eventBus) : BaseController
+    public class WorkScheduleController(EventBus _eventBus) : BaseAuthController
     {
         [HttpPost]
         [Route("create-workschedule")]
@@ -47,6 +46,7 @@ namespace Hsm.Api.Controllers
 
         [HttpPut]
         [Route("update-workschedule")]
+        [ServiceFilter(typeof(GenericSpecificNotFoundFilter<WorkSchedule>))]
         public async Task<IActionResult> UpdateWorkSchedule([FromBody] UpdateWorkScheduleDto updateWorkScheduleDto)
         {
             UpdateWorkScheduleCommandRequest updateWorkScheduleCommandRequest = new(updateWorkScheduleDto);

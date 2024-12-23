@@ -3,6 +3,8 @@ using Hsm.Application.Cqrs.Commands.Requests;
 using Hsm.Application.Cqrs.Commands.Responses;
 using Hsm.Application.Cqrs.Queries.Requests;
 using Hsm.Application.Cqrs.Queries.Responses;
+using Hsm.Application.Filters;
+using Hsm.Domain.Entities.Entities;
 using Hsm.Domain.Models.Dtos.Doctor;
 using Hsm.Domain.Models.Dtos.Hospital;
 using Hsm.Domain.Models.Page;
@@ -13,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Hsm.Api.Controllers
 {
     [Authorize(Roles = "Admin,Manager,User")]
-    public class HospitalController(EventBus _eventBus) : BaseController
+    public class HospitalController(EventBus _eventBus) : BaseAuthController
     {
         /// <summary>
         /// At this endpoint the bool response will be returned
@@ -40,6 +42,7 @@ namespace Hsm.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("delete-hospital/{id}")]
+        [ServiceFilter(typeof(GenericNotFoundFilter<Hospital>))]
         public async Task<IActionResult> DeleteHospital([FromRoute] Guid id)
         {
             DeleteHospitalCommandRequest deleteHospitalCommandRequest = new(id);
@@ -88,6 +91,7 @@ namespace Hsm.Api.Controllers
         /// <returns>Return type is bool</returns>
         [HttpPut]
         [Route("update-hospital")]
+        [ServiceFilter(typeof(GenericSpecificNotFoundFilter<WorkSchedule>))]
         public async Task<IActionResult> UpdateHospital([FromBody] UpdateHospitalDto updateHospitalDto)
         {
             UpdateHospitalCommandRequest updateHospitalCommandRequest = new(updateHospitalDto);
