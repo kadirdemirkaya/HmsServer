@@ -1,8 +1,9 @@
 ﻿using FlowValidate;
+using Hsm.Domain.Models.Dtos.Address;
 
 namespace Hsm.Application.Validations.Address
 {
-    public class AddressValidation : AbstractValidator<Hsm.Domain.Entities.Entities.Address>
+    public class AddressValidation : AbstractValidator<AddressDto>
     {
         public AddressValidation()
         {
