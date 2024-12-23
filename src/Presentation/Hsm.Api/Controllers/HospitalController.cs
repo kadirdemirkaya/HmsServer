@@ -72,7 +72,7 @@ namespace Hsm.Api.Controllers
         /// <summary>
         /// Bring all doctors with hospitalid
         /// </summary>
-        /// <param name="id">Doctor's id info</param>
+        /// <param name="id">parameter should be hospitalId </param>
         /// <returns>Returns doctor model list </returns>
         [HttpGet]
         [Route("get-doctors-in-hospital")]
@@ -91,7 +91,7 @@ namespace Hsm.Api.Controllers
         /// <returns>Return type is bool</returns>
         [HttpPut]
         [Route("update-hospital")]
-        [ServiceFilter(typeof(GenericSpecificNotFoundFilter<WorkSchedule>))]
+        [ServiceFilter(typeof(GenericSpecificNotFoundFilter<Hospital>))]
         public async Task<IActionResult> UpdateHospital([FromBody] UpdateHospitalDto updateHospitalDto)
         {
             UpdateHospitalCommandRequest updateHospitalCommandRequest = new(updateHospitalDto);

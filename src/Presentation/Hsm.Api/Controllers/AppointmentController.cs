@@ -4,7 +4,6 @@ using Hsm.Application.Cqrs.Commands.Responses;
 using Hsm.Application.Filters;
 using Hsm.Domain.Entities.Entities;
 using Hsm.Domain.Models.Dtos.Appointment;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +38,5 @@ namespace Hsm.Api.Controllers
 
             return Ok(cancelAppointmentCommandResponse.ApiResponseModel);
         }
-
     }
 }
