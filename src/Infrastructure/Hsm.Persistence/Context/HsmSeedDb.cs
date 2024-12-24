@@ -2,18 +2,28 @@
 using Hsm.Domain.Entities.Entities;
 using Hsm.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hsm.Persistence.Context
 {
     public static class HsmSeedDb
     {
+        private static int count = 0;
         public static async Task SeedAsync(IServiceProvider serviceProvider)
         {
-            await UserAndRole(serviceProvider);
+            if (count == 0)
+            {
+                var dbContext = serviceProvider.GetRequiredService<HsmDbContext>();
 
-            await DataForFilter(serviceProvider);
+                await dbContext.Database.MigrateAsync();
 
+                await UserAndRole(serviceProvider);
+
+                await DataForFilter(serviceProvider);
+
+                count += 1;
+            }
         }
 
         private static async Task DataForFilter(IServiceProvider serviceProvider)

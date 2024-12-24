@@ -1,0 +1,34 @@
+services:
+  hsm.api:
+    image: kadirkdr/hsmapi:v1
+    build:
+      context: .
+      dockerfile: src/Presentation/Hsm.Api/Dockerfile
+    depends_on:
+      - mssql
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app-network
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server
+    container_name: mssql
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "P2a523w0rD3r!"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mssql_data:

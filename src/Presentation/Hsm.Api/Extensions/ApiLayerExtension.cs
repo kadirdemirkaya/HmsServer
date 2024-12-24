@@ -72,8 +72,6 @@ namespace Hsm.Api.Extensions
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             });
 
-            app.UseHttpsRedirection();
-
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthorization();
