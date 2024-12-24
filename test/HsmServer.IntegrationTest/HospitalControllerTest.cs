@@ -64,7 +64,7 @@ namespace HsmServer.IntegrationTest
                 var client = _factory.CreateClient();
                 var content = new StringContent(JsonConvert.SerializeObject(loginDto), Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("/api/Authentication/SignUp", content);
+                var response = await client.PostAsync("/api/Authentication/SignIn", content);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -98,7 +98,7 @@ namespace HsmServer.IntegrationTest
                 {
                     Name = "Istanbul",
                 },
-                Name = "Umraniye devlet",
+                Name = "Umraniye devlet 2",
             };
 
             string token = await GetJwtTokenAsync();
