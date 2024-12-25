@@ -18,7 +18,7 @@ namespace Hsm.Persistence.Context
             DbContextOptionsBuilder<HsmDbContext> dbContextOptionsBuilder = new();
 
             SqlServerOptions sqlOptions = configuration.GetOptions<SqlServerOptions>("SqlServerOptions");
-            dbContextOptionsBuilder.UseSqlServer(sqlOptions.SqlConnection);
+            dbContextOptionsBuilder.UseNpgsql(sqlOptions.SqlConnection);
 
             return new(dbContextOptionsBuilder.Options);
         }

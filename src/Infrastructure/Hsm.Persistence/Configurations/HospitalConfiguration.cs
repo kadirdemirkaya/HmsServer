@@ -18,7 +18,11 @@ namespace Hsm.Persistence.Configurations
 
             builder.Property(c => c.CreatedDateUTC).IsRequired();
             builder.Property(c => c.UpdatedDateUTC).IsRequired(false);
-            builder.Property(c => c.RowVersion).IsRowVersion();
+            builder.Property(c => c.RowVersion)
+                .IsConcurrencyToken()
+                .HasColumnType("uuid")
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("gen_random_uuid()");
             builder.Property(c => c.IsActive).IsRequired();
 
             builder.HasOne(c => c.City)

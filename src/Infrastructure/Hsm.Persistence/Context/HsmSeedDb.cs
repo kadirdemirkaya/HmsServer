@@ -272,7 +272,7 @@ namespace Hsm.Persistence.Context
                 Clinical oncology6 = Clinical.Create("Onkoloji", hospital6.Id);
                 hospital6.AddClinicalToHospital(oncology6);
 
-                Doctor doctor6_1 = Doctor.Create("Dr. Ayhan", "Kara", "Onkolog", "Schedule", Guid.Parse("05B126AF-4B08-4930-B244-2E2121318273");
+                Doctor doctor6_1 = Doctor.Create("Dr. Ayhan", "Kara", "Onkolog", "Schedule", Guid.Parse("05B126AF-4B08-4930-B244-2E2121318273"));
                 Doctor doctor6_2 = Doctor.Create("Dr. Zeynep", "Çelik", "Onkolog", "Schedule", Guid.Parse("F1A8E205-C476-495C-ABB3-B4F0E175E833"));
 
                 hospital6.AddDoctorToHospital(doctor6_1);
