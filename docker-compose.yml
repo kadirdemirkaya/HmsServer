@@ -1,34 +1,54 @@
 services:
   hsm.api:
-    image: kadirkdr/hsmapi:v1
+    image: kadirkdr/hsmapi:v6
     build:
       context: .
       dockerfile: src/Presentation/Hsm.Api/Dockerfile
     depends_on:
-      - mssql
+      - postgresql
     ports:
-      - "5000:80"
+      - "8080:8080"
+      - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - app-network
+      - backend
 
-  mssql:
-    image: mcr.microsoft.com/mssql/server
-    container_name: mssql
-    ports:
-      - "1433:1433"
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "P2a523w0rD3r!"
-    volumes:
-      - mssql_data:/var/opt/mssql
+  postgresql:
+    image: postgres
+    container_name: postgresql
     networks:
-      - app-network
+      - backend
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: hmscontext
+      POSTGRES_USER: postgresql
+      POSTGRES_PASSWORD: "Pa55w000rd321t"
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    networks:
+      - backend
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgresql
+    links:
+      - postgresql
 
 networks:
   app-network:
     driver: bridge
+  backend:
+    driver: bridge
 
 volumes:
-  mssql_data:
+  postgresql_data:
