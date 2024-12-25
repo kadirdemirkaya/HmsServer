@@ -27,7 +27,7 @@ namespace Hsm.Persistence.Extensions
             SqlServerOptions sqlOptions = services.GetOptions<SqlServerOptions>("SqlServerOptions");
             JwtOptions jwtOptions = services.GetOptions<JwtOptions>("JwtOptions");
 
-            services.AddDbContext<HsmDbContext>(opt => opt.UseSqlServer(sqlOptions.SqlConnection));
+            services.AddDbContext<HsmDbContext>(opt => opt.UseNpgsql(sqlOptions.SqlConnection));
 
             services.EfCoreRepositoryServiceRegistration<IBaseEntity, HsmDbContext>(ServiceLifetime.Scoped, assembly);
 
