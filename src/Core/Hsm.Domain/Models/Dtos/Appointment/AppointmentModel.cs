@@ -4,7 +4,8 @@
     {
         public Guid Id { get; set; }
         public DateTime AppointmentTime { get; set; }
-        public byte[] RowVersion { get; set; } = null!;
+        //public byte[] RowVersion { get; set; } = null!;
+        public Guid RowVersion { get; set; }
         public bool IsActive { get; set; }
 
         public Guid UserId { get; set; }

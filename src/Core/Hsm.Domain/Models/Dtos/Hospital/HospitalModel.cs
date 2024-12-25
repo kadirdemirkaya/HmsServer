@@ -12,7 +12,9 @@ namespace Hsm.Domain.Models.Dtos.Hospital
         [PropertyMapping("Address")]
         public Hsm.Domain.Entities.Entities.Address Address { get; set; }
         public string ContactNumber { get; set; }
-        public byte[] RowVersion { get; set; } = null!;
+        //public byte[] RowVersion { get; set; } = null!;
+
+        public Guid RowVersion { get; set; }
         public bool IsActive { get; set; }
 
 
