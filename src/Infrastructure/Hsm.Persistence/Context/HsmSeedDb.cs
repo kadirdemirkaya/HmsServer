@@ -279,9 +279,6 @@ namespace Hsm.Persistence.Context
                 hospital6.AddDoctorToHospital(doctor6_2);
                 #endregion
 
-
-
-
                 await _writeHospitalRepo.AddAsync(hospital);
                 await _writeHospitalRepo.AddAsync(hospital2);
                 await _writeHospitalRepo.AddAsync(hospital3);

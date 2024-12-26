@@ -5,7 +5,8 @@ using Hsm.Application.Cqrs.Queries.Requests;
 using Hsm.Application.Cqrs.Queries.Responses;
 using Hsm.Domain.Entities.Entities;
 using Hsm.Domain.Models.Dtos.Clinic;
-using Hsm.Domain.Models.Dtos.WorkSchedule;
+using Hsm.Domain.Models.Dtos.Doctor;
+using Hsm.Domain.Models.Dtos.Hospital;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             specification.Take = @event.PageNumber;
             specification.Conditions.Add(c => c.Hospital.Address.City == @event.ClinicalHospitalsDto.Province && c.Hospital.Address.District == @event.ClinicalHospitalsDto.District);
             specification.Includes = (query => query.Include(w => w.Hospital).ThenInclude(h => h.City));
-            Expression<Func<Clinical, ClinicalHospitalsModel>> selectExpression = clinical => new ClinicalHospitalsModel
+            Expression<Func<Clinical, HospitalWithDoctorsModel>> selectExpression = clinical => new HospitalWithDoctorsModel
             {
                 ClinicalModel = new()
                 {
@@ -31,34 +32,42 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
                     Name = clinical.Name,
                     HospitalId = clinical.HospitalId
                 },
-                HospitalModel = new()
+                Address = Address.Create(clinical.Hospital.Address.Street, clinical.Hospital.Address.City, clinical.Hospital.Address.State, clinical.Hospital.Address.PostalCode, clinical.Hospital.Address.Country, clinical.Hospital.Address.District),
+                CityModel = new()
                 {
-                    Name = clinical.Hospital.Name,
-                    IsActive = clinical.Hospital.IsActive,
-                    Id = clinical.Hospital.Id,
-                    RowVersion = clinical.RowVersion,
-                    ContactNumber = clinical.Hospital.ContactNumber,
-                    Address = Address.Create(clinical.Hospital.Address.Street, clinical.Hospital.Address.City, clinical.Hospital.Address.State, clinical.Hospital.Address.PostalCode, clinical.Hospital.Address.Country, clinical.Hospital.Address.District),
-                    CityModel = new()
-                    {
-                        Id = clinical.Hospital.City.Id,
-                        IsActive = clinical.Hospital.City.IsActive,
-                        Name = clinical.Hospital.City.Name,
-                        RowVersion = clinical.Hospital.City.RowVersion
-                    }
-                }
+                    Id = clinical.Hospital.City.Id,
+                    IsActive = clinical.Hospital.City.IsActive,
+                    Name = clinical.Hospital.City.Name,
+                    RowVersion = clinical.Hospital.City.RowVersion
+                },
+                ContactNumber = clinical.Hospital.ContactNumber,
+                IsActive = clinical.Hospital.IsActive,
+                RowVersion = clinical.Hospital.RowVersion,
+                Id = clinical.Hospital.Id,
+                Name = clinical.Hospital.Name,
+                DoctorModels = clinical.Hospital.Doctors.Select(doctor => new DoctorModel
+                {
+                    Id = doctor.Id,
+                    AppUserId = doctor.AppUserId,
+                    FirstName = doctor.FirstName,
+                    LastName = doctor.LastName,
+                    IsActive = doctor.IsActive,
+                    RowVersion = doctor.RowVersion,
+                    Schedule = doctor.Schedule,
+                    Specialty = doctor.Specialty
+                }).ToList()
             };
 
-            List<ClinicalHospitalsModel> clinicals = await _readRepo.GetListAsync(specification, selectExpression);
+            List<HospitalWithDoctorsModel> clinicals = await _readRepo.GetListAsync(specification, selectExpression);
 
-            PageResponse<ClinicalHospitalsModel> pageResponse = new(clinicals, new()
+            PageResponse<HospitalWithDoctorsModel> pageResponse = new(clinicals, new()
             {
                 PageNumber = @event.PageNumber,
                 PageSize = @event.PageSize,
                 TotalRowCount = clinicals.Count()
             });
 
-            return new(ApiResponseModel<PageResponse<ClinicalHospitalsModel>>.CreateSuccess(pageResponse));
+            return new(ApiResponseModel<PageResponse<HospitalWithDoctorsModel>>.CreateSuccess(pageResponse));
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Hsm.Domain.Entities.Entities
         [PropertyMapping("CityModel")]
         public City City { get; private set; }
 
+        [PropertyMapping("DoctorModel")]
         public ICollection<Doctor> Doctors { get; private set; } = new List<Doctor>();
 
         [PropertyMapping("ClinicalModel")]
