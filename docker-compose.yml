@@ -1,6 +1,6 @@
 services:
   hsm.api:
-    image: kadirkdr/hsmapi:v6
+    image: kadirkdr/hsmapi:v112
     build:
       context: .
       dockerfile: src/Presentation/Hsm.Api/Dockerfile

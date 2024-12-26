@@ -5,13 +5,11 @@ using Hsm.Domain.Models.Dtos.Clinic;
 using Hsm.Domain.Models.Dtos.Doctor;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hsm.Api.Controllers
 {
-    [AllowAnonymous]
-    public class ClinicController(EventBus _eventBus) : BaseAuthController
+    public class ClinicController(EventBus _eventBus) : BaseAllowController
     {
         [HttpGet]
         [Route("get-all-clinics")]

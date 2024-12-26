@@ -11,6 +11,14 @@ namespace Hsm.Api.Controllers
 
     }
 
+    [AllowAnonymous]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BaseAllowController : ControllerBase
+    {
+
+    }
+
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
