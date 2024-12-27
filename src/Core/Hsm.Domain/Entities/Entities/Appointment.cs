@@ -1,5 +1,6 @@
 ﻿using Hsm.Domain.Entities.Base;
 using Hsm.Domain.Entities.Identity;
+using ModelMapper;
 
 namespace Hsm.Domain.Entities.Entities
 {
@@ -10,7 +11,10 @@ namespace Hsm.Domain.Entities.Entities
         public Guid UserId { get; set; }
         public Guid WorkScheduleId { get; set; }
 
+        [PropertyMapping("UserModel")]
         public AppUser User { get; set; }
+
+        [PropertyMapping("WorkScheduleModel")]
         public WorkSchedule WorkSchedule { get; set; }
 
         public Appointment()
