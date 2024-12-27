@@ -25,6 +25,6 @@ namespace Hsm.Domain.Models.Dtos.Hospital
         public CityModel CityModel { get; set; }
 
         [PropertyMapping("ClinicalModel")]
-        public ClinicalModel ClinicalModel { get; set; }
+        public List<ClinicalModel> ClinicalModels { get; set; }
     }
 }

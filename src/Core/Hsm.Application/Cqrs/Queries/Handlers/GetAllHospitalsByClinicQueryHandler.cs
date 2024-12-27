@@ -26,12 +26,13 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             specification.Includes = (query => query.Include(w => w.Hospital).ThenInclude(h => h.City));
             Expression<Func<Clinical, HospitalWithDoctorsModel>> selectExpression = clinical => new HospitalWithDoctorsModel
             {
-                ClinicalModel = new()
-                {
-                    Id = clinical.Id,
-                    Name = clinical.Name,
-                    HospitalId = clinical.HospitalId
-                },
+                //ClinicalModels = clinical.()
+                //{
+                //    Id = clinical.Id,
+                //    Name = clinical.Name,
+                //    HospitalId = clinical.HospitalId
+                //},
+                ClinicalModels = default,
                 Address = Address.Create(clinical.Hospital.Address.Street, clinical.Hospital.Address.City, clinical.Hospital.Address.State, clinical.Hospital.Address.PostalCode, clinical.Hospital.Address.Country, clinical.Hospital.Address.District),
                 CityModel = new()
                 {

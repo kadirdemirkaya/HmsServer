@@ -8,6 +8,7 @@ using Hsm.Application.Filters;
 using Hsm.Domain.Entities.Entities;
 using Hsm.Domain.Entities.Identity;
 using Hsm.Domain.Models.Dtos.Appointment;
+using Hsm.Domain.Models.Dtos.Hospital;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -43,6 +44,16 @@ namespace Hsm.Api.Controllers
                 return BadRequest(cancelAppointmentCommandResponse.ApiResponseModel);
 
             return Ok(cancelAppointmentCommandResponse.ApiResponseModel);
+        }
+
+        [HttpPost]
+        [Route("search-appointments")]
+        public async Task<ActionResult<PageResponse<HospitalWithDoctorsModel>>> SearchAppointments([FromBody] SearchAppointmentDto searchAppointmentDto)
+        {
+            SearchAppointmentsQueryRequest searchAppointmentsQueryRequest = new(searchAppointmentDto);
+            SearchAppointmentsQueryResponse searchAppointmentsQueryResponse = await _eventBus.SendAsync(searchAppointmentsQueryRequest);
+
+            return Ok(searchAppointmentsQueryResponse.ApiResponseModel);
         }
 
         /// <summary>

@@ -40,5 +40,15 @@ namespace Hsm.Api.Controllers
 
             return Ok(getAllDoctorsByClinicalResponse.ApiResponseModel);
         }
+
+        [HttpPost]
+        [Route("get-clinics-by-province-or-district")]
+        public async Task<ActionResult<List<ClinicalModel>>> GetClinicsByProvinceOrDistrict([FromBody] GetClinicDto getClinicDto)
+        {
+            GetClinicsByProvinceOrDistrictQueryRequest getClinicsByProvinceOrDistrictQueryRequest = new(getClinicDto);
+            GetClinicsByProvinceOrDistrictQueryResponse getClinicsByProvinceOrDistrictQueryResponse = await _eventBus.SendAsync(getClinicsByProvinceOrDistrictQueryRequest);
+
+            return Ok(getClinicsByProvinceOrDistrictQueryResponse.ApiResponseModel);
+        }
     }
 }
