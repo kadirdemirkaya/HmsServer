@@ -44,6 +44,22 @@ namespace Hsm.Api.Controllers
             return Ok(getAllWorkScheduleQueryResponse.ApiResponseModel);
         }
 
+        /// <summary>
+        /// Parameter must be DoctorId
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("get-workschedule-by-doctor/{id}")]
+        [ServiceFilter(typeof(GenericNotFoundFilter<Doctor>))] // !
+        public async Task<ActionResult<PageResponse<DoctorWorkScheduleModel>>> GetWorkScheduleByDoctor(Guid id)
+        {
+            GetWorkScheduleByDoctorQueryRequest getWorkScheduleByDoctorQueryRequest = new(id);
+            GetWorkScheduleByDoctorQueryResponse getWorkScheduleByDoctorQueryResponse = await _eventBus.SendAsync(getWorkScheduleByDoctorQueryRequest);
+
+            return Ok(getWorkScheduleByDoctorQueryResponse.ApiResponseModel);
+        }
+
         [HttpPut]
         [Route("update-workschedule")]
         [ServiceFilter(typeof(GenericSpecificNotFoundFilter<WorkSchedule>))]
