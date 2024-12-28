@@ -102,5 +102,16 @@ namespace Hsm.Api.Controllers
 
             return Ok(updateHospitalCommandResponse.ApiResponseModel);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("get-hospital")]
+        public async Task<ActionResult<ApiResponseModel<List<HospitalModel>>>> GetHospital([FromQuery] string province, [FromQuery] string? district, [FromQuery] Guid? clinicalId)
+        {
+            GetHospitalQueryRequest getHospitalQueryRequest = new(new() { ClinicalId = clinicalId, District = district, Province = province });
+            GetHospitalQueryResponse getHospitalQueryResponse = await _eventBus.SendAsync(getHospitalQueryRequest);
+
+            return Ok(getHospitalQueryResponse.ApiResponseModel);
+        }
     }
 }

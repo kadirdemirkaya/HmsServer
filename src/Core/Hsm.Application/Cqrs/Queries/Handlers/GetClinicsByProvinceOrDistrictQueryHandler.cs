@@ -25,8 +25,8 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             Expression<Func<Clinical, ClinicalModel>> selectExpression = clinical => new ClinicalModel
             {
                 Id = clinical.Id,
-                HospitalId = clinical.HospitalId,
-                Name = clinical.Name
+                Name = clinical.Name,
+                HospitalId = null
             };
 
             if (@event.GetClinicDto.District is not null)
@@ -37,7 +37,12 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
 
             List<ClinicalModel> clinicalModels = await _readRepo.GetListAsync(specification, selectExpression);
 
-            return new(ApiResponseModel<List<ClinicalModel>>.CreateSuccess(clinicalModels));
+            List<ClinicalModel> distinctClinicalModels = clinicalModels
+                .GroupBy(c => c.Name)
+                .Select(g => g.First())
+                .ToList();
+
+            return new(ApiResponseModel<List<ClinicalModel>>.CreateSuccess(distinctClinicalModels));
         }
     }
 }

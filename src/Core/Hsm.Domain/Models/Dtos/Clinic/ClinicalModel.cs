@@ -5,6 +5,6 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
 
-        public Guid HospitalId { get; set; }
+        public Guid? HospitalId { get; set; }
     }
 }
