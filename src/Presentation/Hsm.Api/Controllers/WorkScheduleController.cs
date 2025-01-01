@@ -53,7 +53,7 @@ namespace Hsm.Api.Controllers
         [HttpGet]
         [Route("get-workschedule-by-doctor/{id}")]
         [ServiceFilter(typeof(GenericNotFoundFilter<Doctor>))] // !
-        public async Task<ActionResult<PageResponse<DoctorWorkScheduleModel>>> GetWorkScheduleByDoctor(Guid id)
+        public async Task<ActionResult<PageResponse<DoctorWorkScheduleGroupedModel>>> GetWorkScheduleByDoctor(Guid id)
         {
             GetWorkScheduleByDoctorQueryRequest getWorkScheduleByDoctorQueryRequest = new(id);
             GetWorkScheduleByDoctorQueryResponse getWorkScheduleByDoctorQueryResponse = await _eventBus.SendAsync(getWorkScheduleByDoctorQueryRequest);

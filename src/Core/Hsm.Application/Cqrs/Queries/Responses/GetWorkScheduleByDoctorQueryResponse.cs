@@ -7,9 +7,9 @@ namespace Hsm.Application.Cqrs.Queries.Responses
 {
     public class GetWorkScheduleByDoctorQueryResponse : IEventResponse
     {
-        public ApiResponseModel<DoctorWorkScheduleModel> ApiResponseModel { get; set; }
+        public ApiResponseModel<List<DoctorWorkScheduleGroupedModel>> ApiResponseModel { get; set; }
 
-        public GetWorkScheduleByDoctorQueryResponse(ApiResponseModel<DoctorWorkScheduleModel> apiResponseModel)
+        public GetWorkScheduleByDoctorQueryResponse(ApiResponseModel<List<DoctorWorkScheduleGroupedModel>> apiResponseModel)
         {
             ApiResponseModel = apiResponseModel;
         }
