@@ -6,6 +6,8 @@ namespace Hsm.Domain.Models.Dtos.WorkSchedule
     {
         public int WeekNumber { get; set; }
         public DayOfWeek WeekDay { get; set; }
+        public string WeekDayFormatted { get; set; } 
+        public string DateFormatted { get; set; }
         public List<DoctorWorkScheduleByHour> SchedulesByHour { get; set; }
     }
     public class DoctorWorkScheduleByHour
