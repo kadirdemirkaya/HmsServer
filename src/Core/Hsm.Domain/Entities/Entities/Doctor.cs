@@ -59,6 +59,8 @@ namespace Hsm.Domain.Entities.Entities
             WorkSchedules.Add(workSchedule);
         }
 
+        public string GetFullName() => $"{FirstName} {LastName}";
+
         public Doctor SetAppUserId(Guid appUserId) { AppUserId = appUserId; return this; }
         public Doctor SetFirstName(string firstName) { FirstName = firstName; return this; }
         public Doctor SetLastName(string lastName) { LastName = lastName; return this; }

@@ -17,6 +17,8 @@ namespace Hsm.Application.Extensions
 
             services.AddScoped(typeof(GenericSpecificNotFoundFilter<>));
 
+            services.AddScoped(typeof(PropertyFilterService));
+
             return services;
         }
     }

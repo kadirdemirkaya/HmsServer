@@ -22,12 +22,16 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             specification.AsNoTracking = false;
             specification.Skip = @event.PageSize;
             specification.Take = @event.PageNumber;
-            specification.Conditions.Add(a => a.UserId == @event.UserId && a.IsActive == true);
+            specification.Conditions.Add(a => a.IsActive == true);
+            specification.Conditions.Add(a => a.UserId == @event.UserId);
+            specification.Conditions.Add(a => a.WorkSchedule.IsActive == false);
             specification.Includes = query => query.Include(d => d.User).Include(a => a.WorkSchedule).ThenInclude(w => w.Doctor);
+
             Expression<Func<Appointment, UserAppointmentsModel>> selectExpression = appointment => new UserAppointmentsModel
             {
                 Id = appointment.Id,
                 AppointmentTime = appointment.AppointmentTime,
+                IsActive = appointment.IsActive,
                 UserModel = new()
                 {
                     Id = appointment.User.Id,
@@ -60,8 +64,7 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             UserAppointmentsModel userAppointmentsModels = await _readRepo.GetAsync(specification, selectExpression);
 
             if (userAppointmentsModels is null)
-                return new(ApiResponseModel<UserAppointmentsModel>.CreateNotFound("Doctors not found"));
-
+                return new(ApiResponseModel<UserAppointmentsModel>.CreateNotFound("User's active appointment not found !"));
 
             return new(ApiResponseModel<UserAppointmentsModel>.CreateSuccess(userAppointmentsModels));
         }

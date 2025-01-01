@@ -19,7 +19,13 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
         {
             Specification<Doctor> specification = new();
             specification.AsNoTracking = false;
-            specification.Conditions.Add(a => a.Id == @event.DoctorId && a.IsActive == true);
+            specification.Conditions.Add(a => a.Id == @event.DoctorId);
+            specification.Conditions.Add(a => a.IsActive == true); // Ana kayıt filtrelemesi
+            specification.Conditions.Add(a =>
+                a.WorkSchedules.Any(ws =>
+                    ws.Appointments.Any(ap => ap.IsActive == false)
+                )
+            );
             specification.Includes = query => query.Include(d => d.WorkSchedules).ThenInclude(w => w.Appointments);
             Expression<Func<Doctor, DoctorWorkScheduleModel>> selectExpression = doctor => new DoctorWorkScheduleModel
             {
@@ -42,18 +48,25 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
                     StartDate = ws.StartDate,
                     EndDate = ws.EndDate,
                     RowVersion = ws.RowVersion,
-                    AppointmentModel = ws.Appointments.Where(w => w.IsActive == true).Select(ap => new AppointmentModel
+                    AppointmentModels = ws.Appointments.Select(appointment => new AppointmentModel
                     {
-                        Id = ap.Id,
-                        IsActive = ap.IsActive,
-                        AppointmentTime = ap.AppointmentTime,
-                        RowVersion = ap.RowVersion,
-                        UserId = ap.UserId
-                    }).FirstOrDefault()
+                        Id = appointment.Id,
+                        AppointmentTime = appointment.AppointmentTime,
+                        IsActive = appointment.IsActive,
+                        RowVersion = appointment.RowVersion,
+                        UserId = appointment.UserId
+                    }).ToList()
                 }).ToList()
             };
 
             DoctorWorkScheduleModel doctorWorkScheduleModel = await _readRepo.GetAsync(specification, selectExpression);
+
+            var doctorWorkScheduleGroupModel = doctorWorkScheduleModel
+               .DoctorWorkScheduleAppointmentsModels
+               .OrderBy(wc => wc.StartDate)
+               .ToList();
+
+            doctorWorkScheduleModel.DoctorWorkScheduleAppointmentsModels = doctorWorkScheduleGroupModel;
 
             return new(ApiResponseModel<DoctorWorkScheduleModel>.CreateSuccess(doctorWorkScheduleModel));
         }

@@ -11,6 +11,6 @@ namespace Hsm.Domain.Models.Dtos.WorkSchedule
         public Guid RowVersion { get; set; }
         public bool IsActive { get; set; }
 
-        public AppointmentModel AppointmentModel { get; set; }
+        public List<AppointmentModel> AppointmentModels { get; set; }
     }
 }

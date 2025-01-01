@@ -20,7 +20,7 @@ namespace Hsm.Api.Controllers
 
             return Ok(getAllClinicsQueryResponse.ApiResponseModel);
         }
-        
+
         [HttpPost]
         [Route("get-all-hospitals-by-clinic")]
         public async Task<ActionResult<ApiResponseModel<PageResponse<ClinicalHospitalsModel>>>> GetAllHospitalsByClinic([FromBody] ClinicalHospitalsDto clinicalHospitalsDto)

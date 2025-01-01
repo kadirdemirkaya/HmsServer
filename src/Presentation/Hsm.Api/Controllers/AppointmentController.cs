@@ -62,11 +62,12 @@ namespace Hsm.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("get-user-active-appointments/{id}")]
-        [ServiceFilter(typeof(GenericNotFoundFilter<AppUser>))]
-        public async Task<ActionResult<ApiResponseModel<UserAppointmentsModel>>> GetUserActiveAppointments(Guid? id)
+        [Route("get-user-active-appointments")]
+        //[ServiceFilter(typeof(GenericNotFoundFilter<AppUser>))]
+        public async Task<ActionResult<ApiResponseModel<UserAppointmentsModel>>> GetUserActiveAppointments([FromQuery] Guid? id)
         {
-            id = Guid.Parse(_jwtTokenService.GetClaimFromRequest(_httpContextAccessor.HttpContext, "Id"));
+            if (id is null)
+                id = Guid.Parse(_jwtTokenService.GetClaimFromRequest(_httpContextAccessor.HttpContext, "Id"));
 
             GetUserActiveAppointmentsQueryRequest getUserAppointmentsQueryRequest = new(id);
             GetUserActiveAppointmentsQueryResponse getUserAppointmentsQueryResponse = await _eventBus.SendAsync(getUserAppointmentsQueryRequest);
@@ -85,11 +86,12 @@ namespace Hsm.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("get-user-all-appointments/{id}")]
-        [ServiceFilter(typeof(GenericNotFoundFilter<AppUser>))]
-        public async Task<ActionResult<ApiResponseModel<PageResponse<UserAppointmentsModel>>>> GetUserAllAppointments(Guid? id)
+        [Route("get-user-all-appointments")]
+        //[ServiceFilter(typeof(GenericNotFoundFilter<AppUser>))]
+        public async Task<ActionResult<ApiResponseModel<PageResponse<UserAppointmentsModel>>>> GetUserAllAppointments([FromQuery] Guid? id)
         {
-            id = Guid.Parse(_jwtTokenService.GetClaimFromRequest(_httpContextAccessor.HttpContext, "Id"));
+            if (id is null)
+                id = Guid.Parse(_jwtTokenService.GetClaimFromRequest(_httpContextAccessor.HttpContext, "Id"));
 
             GetUserAllAppointmentsQueryRequest getUserAllAppointmentsQueryRequest = new(id);
             GetUserAllAppointmentsQueryResponse getUserAllAppointmentsQueryResponse = await _eventBus.SendAsync(getUserAllAppointmentsQueryRequest);

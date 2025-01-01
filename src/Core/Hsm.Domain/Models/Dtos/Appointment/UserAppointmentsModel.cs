@@ -8,6 +8,7 @@ namespace Hsm.Domain.Models.Dtos.Appointment
     {
         public Guid Id { get; set; }
         public DateTime AppointmentTime { get; set; }
+        public bool IsActive { get; set; }
 
         [PropertyMapping("UserModel")]
         public UserModel UserModel { get; set; }

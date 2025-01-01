@@ -22,11 +22,12 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             specification.Skip = @event.PageSize;
             specification.Take = @event.PageNumber;
             specification.Conditions.Add(a => a.UserId == @event.UserId);
-            specification.Includes = query => query.Include(d => d.User).Include(a => a.WorkSchedule).ThenInclude(w => w.Doctor);
+            specification.Includes = query => query.Include(d => d.User).Include(a => a.WorkSchedule).Include(w => w.WorkSchedule.Doctor);
             Expression<Func<Appointment, UserAppointmentsModel>> selectExpression = appointment => new UserAppointmentsModel
             {
                 Id = appointment.Id,
                 AppointmentTime = appointment.AppointmentTime,
+                IsActive = appointment.IsActive,
                 UserModel = new()
                 {
                     Id = appointment.User.Id,

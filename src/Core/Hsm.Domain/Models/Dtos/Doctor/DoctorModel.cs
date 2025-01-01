@@ -16,7 +16,7 @@ namespace Hsm.Domain.Models.Dtos.Doctor
 
 
         [PropertyMapping("HospitalModel")]
-        public HospitalModel Hospital { get; set; }
+        public HospitalModel HospitalModel { get; set; }
 
 
         public Guid AppUserId { get; set; }
