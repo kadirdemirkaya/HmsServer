@@ -7,10 +7,12 @@ namespace Hsm.Application.Cqrs.Queries.Requests
     public class GetUserActiveAppointmentsQueryRequest : BasePagedQuery<GetUserActiveAppointmentsQueryResponse>
     {
         public Guid? UserId { get; set; }
+        public bool? IsActive { get; set; }
 
-        public GetUserActiveAppointmentsQueryRequest(Guid? userId)
+        public GetUserActiveAppointmentsQueryRequest(Guid? userId, bool isActive)
         {
             UserId = userId;
+            IsActive = isActive;
         }
     }
 }

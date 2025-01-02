@@ -9,7 +9,6 @@ using Hsm.Domain.Models.Dtos.WorkSchedule;
 using Hsm.Domain.Models.Page;
 using Hsm.Domain.Models.Response;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 
 namespace Hsm.Api.Controllers
 {
@@ -42,6 +41,11 @@ namespace Hsm.Api.Controllers
         {
             GetAllWorkScheduleQueryResponse getAllWorkScheduleQueryResponse = await _eventBus.SendAsync(getAllWorkScheduleQueryRequest);
 
+            if (!getAllWorkScheduleQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getAllWorkScheduleQueryResponse.ApiResponseModel);
+            }
+
             return Ok(getAllWorkScheduleQueryResponse.ApiResponseModel);
         }
 
@@ -57,6 +61,11 @@ namespace Hsm.Api.Controllers
         {
             GetWorkScheduleByDoctorQueryRequest getWorkScheduleByDoctorQueryRequest = new(id);
             GetWorkScheduleByDoctorQueryResponse getWorkScheduleByDoctorQueryResponse = await _eventBus.SendAsync(getWorkScheduleByDoctorQueryRequest);
+
+            if (!getWorkScheduleByDoctorQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getWorkScheduleByDoctorQueryResponse.ApiResponseModel);
+            }
 
             return Ok(getWorkScheduleByDoctorQueryResponse.ApiResponseModel);
         }
@@ -78,6 +87,11 @@ namespace Hsm.Api.Controllers
         {
             SearchWorkScheduleQueryRequest searchWorkScheduleQueryRequest = new(new() { Province = province, District = district, ClinicId = clinicId, DoctorId = doctorId, HospitalId = hospitalId });
             SearchWorkScheduleQueryResponse searchWorkScheduleQueryResponse = await _eventBus.SendAsync(searchWorkScheduleQueryRequest);
+
+            if (!searchWorkScheduleQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(searchWorkScheduleQueryResponse.ApiResponseModel);
+            }
 
             return Ok(searchWorkScheduleQueryResponse.ApiResponseModel);
         }

@@ -22,9 +22,15 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             specification.AsNoTracking = false;
             specification.Skip = @event.PageSize;
             specification.Take = @event.PageNumber;
-            specification.Conditions.Add(a => a.IsActive == true);
             specification.Conditions.Add(a => a.UserId == @event.UserId);
-            specification.Conditions.Add(a => a.WorkSchedule.IsActive == false);
+            if (@event.IsActive is true)
+            {
+                specification.Conditions.Add(a => a.IsActive == true);
+                specification.Conditions.Add(a => a.WorkSchedule.IsActive == false);
+            }
+            else
+                specification.Conditions.Add(a => a.IsActive == false);
+            //specification.Conditions.Add(a => a.WorkSchedule.IsActive == true);
             specification.Includes = query => query.Include(d => d.User).Include(a => a.WorkSchedule).ThenInclude(w => w.Doctor);
 
             Expression<Func<Appointment, UserAppointmentsModel>> selectExpression = appointment => new UserAppointmentsModel
@@ -56,17 +62,25 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
                         RowVersion = appointment.WorkSchedule.Doctor.RowVersion,
                         IsActive = appointment.WorkSchedule.Doctor.IsActive,
                         Schedule = appointment.WorkSchedule.Doctor.Schedule,
-                        Specialty = appointment.WorkSchedule.Doctor.Specialty
+                        Specialty = appointment.WorkSchedule.Doctor.Specialty,
+                        HospitalModel = new()
+                        {
+                            Id = appointment.WorkSchedule.Doctor.Hospital.Id,
+                            Name = appointment.WorkSchedule.Doctor.Hospital.Name,
+                            ContactNumber = appointment.WorkSchedule.Doctor.Hospital.ContactNumber,
+                            RowVersion = appointment.WorkSchedule.Doctor.Hospital.RowVersion,
+                            IsActive = appointment.WorkSchedule.Doctor.Hospital.IsActive,
+                        }
                     },
                 }
             };
 
-            UserAppointmentsModel userAppointmentsModels = await _readRepo.GetAsync(specification, selectExpression);
+            List<UserAppointmentsModel> userAppointmentsModels = await _readRepo.GetListAsync(specification, selectExpression);
 
             if (userAppointmentsModels is null)
-                return new(ApiResponseModel<UserAppointmentsModel>.CreateNotFound("User's active appointment not found !"));
+                return new(ApiResponseModel<List<UserAppointmentsModel>>.CreateNotFound("User's active appointment not found !"));
 
-            return new(ApiResponseModel<UserAppointmentsModel>.CreateSuccess(userAppointmentsModels));
+            return new(ApiResponseModel<List<UserAppointmentsModel>>.CreateSuccess(userAppointmentsModels));
         }
     }
 }

@@ -18,6 +18,11 @@ namespace Hsm.Api.Controllers
             GetAllClinicsQueryRequest getAllClinicsQuery = new();
             GetAllClinicsQueryResponse getAllClinicsQueryResponse = await _eventBus.SendAsync(getAllClinicsQuery);
 
+            if (!getAllClinicsQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getAllClinicsQueryResponse.ApiResponseModel);
+            }
+
             return Ok(getAllClinicsQueryResponse.ApiResponseModel);
         }
 
@@ -27,6 +32,11 @@ namespace Hsm.Api.Controllers
         {
             GetAllHospitalsByClinicQueryRequest getAllHospitalsByClinicQueryRequest = new(clinicalHospitalsDto);
             GetAllHospitalsByClinicQueryResponse getAllHospitalsByClinicQueryResponse = await _eventBus.SendAsync(getAllHospitalsByClinicQueryRequest);
+
+            if (!getAllHospitalsByClinicQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getAllHospitalsByClinicQueryResponse.ApiResponseModel);
+            }
 
             return Ok(getAllHospitalsByClinicQueryResponse.ApiResponseModel);
         }
@@ -38,6 +48,11 @@ namespace Hsm.Api.Controllers
             GetAllDoctorsByClinicalRequest getAllDoctorsByClinicalRequest = new(clinicalDoctorDto);
             GetAllDoctorsByClinicalResponse getAllDoctorsByClinicalResponse = await _eventBus.SendAsync(getAllDoctorsByClinicalRequest);
 
+            if (!getAllDoctorsByClinicalResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getAllDoctorsByClinicalResponse.ApiResponseModel);
+            }
+
             return Ok(getAllDoctorsByClinicalResponse.ApiResponseModel);
         }
 
@@ -47,6 +62,11 @@ namespace Hsm.Api.Controllers
         {
             GetClinicsByProvinceOrDistrictQueryRequest getClinicsByProvinceOrDistrictQueryRequest = new(getClinicDto);
             GetClinicsByProvinceOrDistrictQueryResponse getClinicsByProvinceOrDistrictQueryResponse = await _eventBus.SendAsync(getClinicsByProvinceOrDistrictQueryRequest);
+
+            if (!getClinicsByProvinceOrDistrictQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getClinicsByProvinceOrDistrictQueryResponse.ApiResponseModel);
+            }
 
             return Ok(getClinicsByProvinceOrDistrictQueryResponse.ApiResponseModel);
         }

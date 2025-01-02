@@ -53,28 +53,33 @@ namespace Hsm.Api.Controllers
             SearchAppointmentsQueryRequest searchAppointmentsQueryRequest = new(searchAppointmentDto);
             SearchAppointmentsQueryResponse searchAppointmentsQueryResponse = await _eventBus.SendAsync(searchAppointmentsQueryRequest);
 
+            if (!searchAppointmentsQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(searchAppointmentsQueryResponse.ApiResponseModel);
+            }
+
             return Ok(searchAppointmentsQueryResponse.ApiResponseModel);
         }
 
         /// <summary>
-        /// Kullanıcı id'si ile herhangi bir kişinin randevuları yada istek atan kişinin(token ile) ait olan aktif randevuları listelenir.
+        /// Kullanıcı id'si ile herhangi bir kişinin randevuları yada istek atan kişinin(token ile) ait olan aktif randevuları listelenir. bool değerine göre aktif olan veya olmayan randevualr gelir.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("get-user-active-appointments")]
         //[ServiceFilter(typeof(GenericNotFoundFilter<AppUser>))]
-        public async Task<ActionResult<ApiResponseModel<UserAppointmentsModel>>> GetUserActiveAppointments([FromQuery] Guid? id)
+        public async Task<ActionResult<ApiResponseModel<UserAppointmentsModel>>> GetUserActiveAppointments([FromQuery] Guid? id, [FromQuery] bool? isActive)
         {
             if (id is null)
                 id = Guid.Parse(_jwtTokenService.GetClaimFromRequest(_httpContextAccessor.HttpContext, "Id"));
 
-            GetUserActiveAppointmentsQueryRequest getUserAppointmentsQueryRequest = new(id);
+            GetUserActiveAppointmentsQueryRequest getUserAppointmentsQueryRequest = new(id, isActive ?? true);
             GetUserActiveAppointmentsQueryResponse getUserAppointmentsQueryResponse = await _eventBus.SendAsync(getUserAppointmentsQueryRequest);
 
             if (!getUserAppointmentsQueryResponse.ApiResponseModel.Success)
             {
-                return NotFound(new { Message = "Active appointments not found for the user." });
+                return NotFound(getUserAppointmentsQueryResponse.ApiResponseModel);
             }
 
             return Ok(getUserAppointmentsQueryResponse.ApiResponseModel);
@@ -98,7 +103,7 @@ namespace Hsm.Api.Controllers
 
             if (!getUserAllAppointmentsQueryResponse.ApiResponseModel.Success)
             {
-                return NotFound(new { Message = "Active appointments not found for the user." });
+                return NotFound(getUserAllAppointmentsQueryResponse.ApiResponseModel);
             }
 
             return Ok(getUserAllAppointmentsQueryResponse.ApiResponseModel);

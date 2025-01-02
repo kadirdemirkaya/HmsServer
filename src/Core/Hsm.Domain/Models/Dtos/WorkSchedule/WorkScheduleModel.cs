@@ -10,7 +10,6 @@ namespace Hsm.Domain.Models.Dtos.WorkSchedule
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        // public byte[] RowVersion { get; set; } = null!;
         public Guid RowVersion { get; set; }
         public bool IsActive { get; set; }
 

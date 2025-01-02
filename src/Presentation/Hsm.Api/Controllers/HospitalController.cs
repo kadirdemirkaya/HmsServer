@@ -66,6 +66,11 @@ namespace Hsm.Api.Controllers
         {
             GetAllHospitalQueryResponse getAllHospitalQueryResponse = await _eventBus.SendAsync(getAllHospitalQueryRequest);
 
+            if (!getAllHospitalQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getAllHospitalQueryResponse.ApiResponseModel);
+            }
+
             return Ok(getAllHospitalQueryResponse.ApiResponseModel);
         }
 
@@ -80,6 +85,11 @@ namespace Hsm.Api.Controllers
         {
             GetDoctorsInHospitalQueryRequest getDoctorsInHospitalQueryRequest = new(id);
             GetDoctorsInHospitalQueryResponse getDoctorsInHospitalQueryResponse = await _eventBus.SendAsync(getDoctorsInHospitalQueryRequest);
+
+            if (!getDoctorsInHospitalQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getDoctorsInHospitalQueryResponse.ApiResponseModel);
+            }
 
             return Ok(getDoctorsInHospitalQueryResponse.ApiResponseModel);
         }
@@ -110,6 +120,11 @@ namespace Hsm.Api.Controllers
         {
             GetHospitalQueryRequest getHospitalQueryRequest = new(new() { ClinicalId = clinicalId, District = district, Province = province });
             GetHospitalQueryResponse getHospitalQueryResponse = await _eventBus.SendAsync(getHospitalQueryRequest);
+
+            if (!getHospitalQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getHospitalQueryResponse.ApiResponseModel);
+            }
 
             return Ok(getHospitalQueryResponse.ApiResponseModel);
         }
