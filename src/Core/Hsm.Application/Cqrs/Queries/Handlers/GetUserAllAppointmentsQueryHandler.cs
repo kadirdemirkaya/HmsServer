@@ -59,7 +59,7 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
 
             List<UserAppointmentsModel>? userAppointmentsModels = await _readRepo.GetListAsync(specification, selectExpression);
 
-            if (userAppointmentsModels is null)
+            if (userAppointmentsModels is null || userAppointmentsModels.Count == 0)
                 return new(ApiResponseModel<PageResponse<UserAppointmentsModel>>.CreateNotFound("Doctors not found"));
 
             PageResponse<UserAppointmentsModel> pageResponse = new(userAppointmentsModels, new()

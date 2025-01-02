@@ -105,7 +105,7 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
                     { DayOfWeek.Saturday, "Cumartesi" }
                 };
 
-                var groupedByWeekAndDayAndHour = doctorWorkScheduleModel.DoctorWorkScheduleAppointmentsModels
+                List<DoctorWorkScheduleGroupedModel> groupedByWeekAndDayAndHour = doctorWorkScheduleModel.DoctorWorkScheduleAppointmentsModels
                      .GroupBy(x => new
                      {
                          WeekNumber = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(x.StartDate, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday),
@@ -142,6 +142,9 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
                      .OrderBy(x => x.WeekNumber)
                      .ThenBy(x => x.WeekDay)
                      .ToList();
+
+                if (groupedByWeekAndDayAndHour.Count == 0)
+                    return new(ApiResponseModel<List<DoctorWorkScheduleGroupedModel>>.CreateNotFound());
 
                 return new(ApiResponseModel<List<DoctorWorkScheduleGroupedModel>>.CreateSuccess(groupedByWeekAndDayAndHour));
             }

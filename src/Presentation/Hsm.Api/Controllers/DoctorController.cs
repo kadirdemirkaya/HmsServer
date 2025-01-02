@@ -65,6 +65,11 @@ namespace Hsm.Api.Controllers
         {
             GetAllDoctorsQueryResponse getAllDoctorsQueryResponse = await _eventBus.SendAsync(getAllDoctorsQueryRequest);
 
+            if (!getAllDoctorsQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getAllDoctorsQueryResponse.ApiResponseModel);
+            }
+
             return Ok(getAllDoctorsQueryResponse.ApiResponseModel);
         }
 
@@ -89,6 +94,11 @@ namespace Hsm.Api.Controllers
         {
             GetDoctorQueryRequest getDoctorQueryRequest = new(new() { ClinicalId = clinicalId, HospitalId = hospitalId });
             GetDoctorQueryResponse getDoctorQueryResponse = await _eventBus.SendAsync(getDoctorQueryRequest);
+
+            if (!getDoctorQueryResponse.ApiResponseModel.Success)
+            {
+                return NotFound(getDoctorQueryResponse.ApiResponseModel);
+            }
 
             return Ok(getDoctorQueryResponse.ApiResponseModel);
         }

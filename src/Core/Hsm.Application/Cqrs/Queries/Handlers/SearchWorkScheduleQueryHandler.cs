@@ -62,7 +62,7 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
                 .Select(group => group.OrderBy(wc => wc.NearestWorkScheduleModel.StartDate).FirstOrDefault())
                 .ToList();
 
-            if (nearestSchedulesByDoctor is null)
+            if (nearestSchedulesByDoctor is null || nearestSchedulesByDoctor.Count == 0)
                 return new(ApiResponseModel<List<SearchWorkScheduleModel>>.CreateNotFound("WorkSchedule is not found"));
 
             return new(ApiResponseModel<List<SearchWorkScheduleModel>>.CreateSuccess(nearestSchedulesByDoctor));
