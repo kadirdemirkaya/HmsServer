@@ -1,0 +1,28 @@
+services:
+  hsm.api:
+    image: kadirkdr/hsmserverapi:v22
+    build:
+      context: .
+      dockerfile: ../src/Presentation/Hsm.Api/Dockerfile
+    depends_on:
+      - nginx
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - backend
+
+  nginx:
+      image: nginx
+      volumes:
+        - ../confs/nginx.conf:/etc/nginx/nginx.conf
+      ports:
+        - "811:811"
+      networks:
+        - backend
+
+networks:
+  backend:
+    driver: bridge
