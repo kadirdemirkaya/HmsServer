@@ -35,6 +35,8 @@ namespace Hsm.Persistence.Extensions
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+            services.AddScoped<IMailService, MailService>();
+
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
                 opt.Password.RequiredUniqueChars = 2;

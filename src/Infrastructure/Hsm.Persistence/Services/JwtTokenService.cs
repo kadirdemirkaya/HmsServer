@@ -80,6 +80,17 @@ namespace Hsm.Persistence.Services
 
             return claimValue;
         }
+        public string ExtractTokenFromHeader(HttpRequest request)
+        {
+            var authorizationHeader = request.Headers["Authorization"].FirstOrDefault();
+
+            if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
+            {
+                return authorizationHeader.Substring("Bearer ".Length).Trim();
+            }
+
+            return null;  
+        }
 
         public bool ValidateCurrentToken(string token)
         {
@@ -100,6 +111,22 @@ namespace Hsm.Persistence.Services
                 };
 
                 tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var userId = jwtToken.Claims.First(x => x.Type == "sub").Value;
+
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                return false;
+            }
+            catch (SecurityTokenInvalidIssuerException)
+            {
+                return false;
+            }
+            catch (SecurityTokenInvalidAudienceException)
+            {
+                return false;
             }
             catch (Exception)
             {

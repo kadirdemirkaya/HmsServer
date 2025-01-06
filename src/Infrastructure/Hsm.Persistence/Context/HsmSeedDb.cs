@@ -18,6 +18,8 @@ namespace Hsm.Persistence.Context
 
                 await dbContext.Database.MigrateAsync();
 
+                await AddDefinedUsers(serviceProvider);
+
                 await ExistRole(serviceProvider);
 
                 await DataForFilter(serviceProvider);
@@ -25,6 +27,41 @@ namespace Hsm.Persistence.Context
                 count += 1;
             }
         }
+
+        private static async Task AddDefinedUsers(IServiceProvider serviceProvider)
+        {
+            UserManager<AppUser> _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+
+            var defaultUsers = new List<AppUser>()
+            {
+                new()
+                {
+                    Id = Guid.Parse("A83ADF0D-319C-49C0-AC51-1CA1361A6599"),
+                    UserName = "UgurAkcay",
+                    Email = "cezaugur8@hotmail.com",
+                    EmailConfirmed = true,
+                    TcNumber = "44445444940"
+                },
+                new()
+                {
+                    Id = Guid.Parse("0BCC6871-53AC-4B0C-B365-836872181B04"),
+                    UserName = "KadirDemirkaya",
+                    Email = "kadirskc31@gmail.com",
+                    EmailConfirmed = true,
+                    TcNumber = "11111111111"
+                }
+            };
+
+            foreach (var defaultUser in defaultUsers)
+            {
+                var result = await _userManager.CreateAsync(defaultUser, "User_123");
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(defaultUser, "Admin");
+                }
+            }
+        }
+
         private static async Task ExistRole(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>();

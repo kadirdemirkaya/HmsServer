@@ -33,6 +33,32 @@ namespace Hsm.Api.Controllers
         }
 
         [HttpDelete]
+        [AllowAnonymous]
+        [Route("cancel-appointment-by-mail/{id}")]
+        [ServiceFilter(typeof(GenericNotFoundFilter<Appointment>))]
+        public async Task<IActionResult> CancelAppointmentByMail(Guid id, [FromQuery] string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized();
+            }
+
+            var claimsPrincipal = _jwtTokenService.ValidateCurrentToken(token);
+            if (claimsPrincipal == null)
+            {
+                return Unauthorized();
+            }
+
+            CancelAppointmentCommandRequest cancelAppointmentCommandRequest = new(id);
+            CancelAppointmentCommandResponse cancelAppointmentCommandResponse = await _eventBus.SendAsync(cancelAppointmentCommandRequest);
+
+            if (!cancelAppointmentCommandResponse.ApiResponseModel.Success)
+                return BadRequest(cancelAppointmentCommandResponse.ApiResponseModel);
+
+            return Ok(cancelAppointmentCommandResponse.ApiResponseModel);
+        }
+
+        [HttpDelete]
         [Route("cancel-appointment/{id}")]
         [ServiceFilter(typeof(GenericNotFoundFilter<Appointment>))]
         public async Task<IActionResult> CancelAppointment(Guid id)
