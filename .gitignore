@@ -383,7 +383,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 *.jpg
-*.png
 /BlogWeb.Mvc/Data/Seeds/BlogDbSeedContext.cs
 
 volume/
