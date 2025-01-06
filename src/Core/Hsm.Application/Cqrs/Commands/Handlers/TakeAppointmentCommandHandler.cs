@@ -5,17 +5,19 @@ using Hsm.Application.Abstractions;
 using Hsm.Application.Cqrs.Commands.Requests;
 using Hsm.Application.Cqrs.Commands.Responses;
 using Hsm.Domain.Entities.Entities;
+using Hsm.Domain.Entities.Identity;
+using Hsm.Domain.Models.Constants;
 using Hsm.Domain.Models.Dtos.Appointment;
 using Hsm.Domain.Models.Response;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ModelMapper;
 
 namespace Hsm.Application.Cqrs.Commands.Handlers
 {
-    public class TakeAppointmentCommandHandler(IWriteRepository<Appointment> _writeRepo, IReadRepository<Appointment> _readRepo, IReadRepository<WorkSchedule> _workScheduleReadRepo, IWriteRepository<WorkSchedule> _workScheduleWriteRepo, IJwtTokenService _jwtTokenService, IHttpContextAccessor _httpContextAccessor) : IEventHandler<TakeAppointmentCommandRequest, TakeAppointmentCommandResponse>
+    public class TakeAppointmentCommandHandler(IWriteRepository<Appointment> _writeRepo, IReadRepository<Appointment> _readRepo, IReadRepository<WorkSchedule> _workScheduleReadRepo, IWriteRepository<WorkSchedule> _workScheduleWriteRepo, IJwtTokenService _jwtTokenService, IHttpContextAccessor _httpContextAccessor, IMailService _mailService, UserManager<AppUser> _userManager) : IEventHandler<TakeAppointmentCommandRequest, TakeAppointmentCommandResponse>
     {
-        // bir hasta aynı klinikte birden fazla randevu alamaz
         public async Task<TakeAppointmentCommandResponse> Handle(TakeAppointmentCommandRequest @event)
         {
             bool isNewAppointment = true;
@@ -38,8 +40,6 @@ namespace Hsm.Application.Cqrs.Commands.Handlers
 
             Appointment? isExistAppointment = await _readRepo.GetAsync(appointmentSpecification);
 
-            //Appointment oldAppointment = isExistAppointment.Where(a => a.WorkScheduleId == existWorkSchedule.Id).FirstOrDefault();
-
             if (isExistAppointment is null) // new appointment 
             {
                 Appointment newAppoinment = ModelMap.Map<TakeAppointmentDto, Appointment>(@event.TakeAppointmentDto);
@@ -51,7 +51,16 @@ namespace Hsm.Application.Cqrs.Commands.Handlers
                 workSchedule.SetIsActive(false);
 
                 bool updateResponse = await _workScheduleWriteRepo.UpdateAsync(workSchedule);
-                //bool createResponse = await _writeRepo.SaveChangesAsync();
+
+                if (updateResponse is true)
+                {
+                    AppUser user = await _userManager.FindByIdAsync(id.ToString());
+
+                    string token = _jwtTokenService.ExtractTokenFromHeader(_httpContextAccessor.HttpContext.Request);
+
+                    await SendEmail(user.Email, user.Email, Constant.HtmlBodies.AppointmentAndCancelAppointment(workSchedule.Doctor.Hospital.Name, workSchedule.GetStartDateForMail(), workSchedule.Doctor.Hospital.Clinicals.FirstOrDefault().Name, workSchedule.Doctor.GetFullName(), newAppoinment.Id.ToString(), token));
+                }
+
 
                 return updateResponse is true ? new(ApiResponseModel<bool>.CreateSuccess(updateResponse)) : new(ApiResponseModel<bool>.CreateFailure());
             }
@@ -77,8 +86,22 @@ namespace Hsm.Application.Cqrs.Commands.Handlers
 
                 bool updResponse = await _workScheduleWriteRepo.UpdateAsync(workSchedule); // oldwc update
 
+                if (updateAppointResponse && updateWCResponse && updResponse is true)
+                {
+                    AppUser user = await _userManager.FindByIdAsync(id.ToString());
+
+                    string token = _jwtTokenService.ExtractTokenFromHeader(_httpContextAccessor.HttpContext.Request);
+
+                    await SendEmail(user.Email, user.Email, Constant.HtmlBodies.AppointmentAndCancelAppointment(workSchedule.Doctor.Hospital.Name, workSchedule.GetStartDateForMail(), workSchedule.Doctor.Hospital.Clinicals.FirstOrDefault().Name, workSchedule.Doctor.FirstName, newAppoinment.Id.ToString(), token));
+                }
+
                 return updateAppointResponse && updateWCResponse && updResponse is true ? new(ApiResponseModel<bool>.CreateSuccess(true)) : new(ApiResponseModel<bool>.CreateFailure());
             }
+        }
+
+        private async Task SendEmail(string email, string subject, string message)
+        {
+            await _mailService.SendMessageAsync(email, subject, message, true);
         }
     }
 }
