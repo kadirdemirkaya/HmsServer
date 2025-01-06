@@ -24,7 +24,7 @@
             {
                 return $@"
                 <html>
-                    <body style='font-family: Arial, sans-serif; color: #333; background-color: #f4f4f4;'>
+                    <body style='font-family: Arial, sans-serif; color: #333; padding: 20px ;background-color: #f4f4f4;'>
                         <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
                             <h2 style='color: #2c3e50; text-align: center;'>Randevunuz Alındı</h2>
                             <p style='font-size: 16px; line-height: 1.5;'>Merhaba,</p>
@@ -57,11 +57,11 @@
                 </html>";
             }
 
-            public static string AppointmentAndCancelAppointment(string hospitalName, string startDate, string clinicalName, string doctorName, string appointmentId,string token)
+            public static string AppointmentAndCancelAppointment(string hospitalName, string startDate, string clinicalName, string doctorName, string appointmentId, string token)
             {
                 return $@"
                     <html>
-                        <body style='font-family: Arial, sans-serif; color: #333; background-color: #f4f4f4;'>
+                        <body style='font-family: Arial, sans-serif; padding: 20px ;color: #333; background-color: #f4f4f4;'>
                             <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
                                 <h2 style='color: #2c3e50; text-align: center;'>Randevunuz Alındı</h2>
                                 <p style='font-size: 16px; line-height: 1.5;'>Merhaba,</p>
@@ -104,7 +104,7 @@
             {
                 return $@"
                     <html>
-                        <body style='font-family: Arial, sans-serif; color: #333; background-color: #f4f4f4;'>
+                        <body style='font-family: Arial, sans-serif;padding: 20px ; color: #333; background-color: #f4f4f4;'>
                             <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
                                 <h2 style='color: #2c3e50; text-align: center;'>Randevunuz İptal Edilmiştir</h2>
                                 <p style='font-size: 16px; line-height: 1.5;'>Merhaba,</p>
