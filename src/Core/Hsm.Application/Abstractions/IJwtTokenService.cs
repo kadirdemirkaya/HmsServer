@@ -9,5 +9,7 @@ namespace Hsm.Application.Abstractions
         bool ValidateCurrentToken(string token);
         string GetClaim(string token, string claimType);
         string GetClaimFromRequest(HttpContext httpContext, string claimType);
+        string ExtractTokenFromHeader(HttpRequest request);
+
     }
 }
