@@ -46,6 +46,7 @@ namespace Hsm.Domain.Entities.Entities
         public static WorkSchedule Create(Guid id, string name, DateTime startDate, DateTime endDate, Guid doctorId)
             => new(id, name, startDate, endDate, doctorId);
 
+        public string GetStartDateForMail() => StartDate.ToUniversalTime().ToString("dd/MM/yyyy HH:mm:ss");
         public void AddAppointmentToWorkSchedule(Appointment appointment)
         {
             Appointments.Add(appointment);
