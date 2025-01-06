@@ -2,10 +2,15 @@ using EfCore.Repository;
 using EfCore.Repository.Abstractions;
 using EfCore.Repository.Concretes;
 using EventFlux;
+using Hsm.Application.Abstractions;
+using Hsm.Application.Extensions;
+using Hsm.Domain.Models.Options;
+using Hsm.Persistence.Services;
 using HsmServer.UnitTest.Context;
 using HsmServer.UnitTest.Events;
 using HsmServer.UnitTest.Models;
 using HsmServer.UnitTest.Validators;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModelMapper;
 using Moq;
@@ -382,6 +387,61 @@ namespace HsmServer.UnitTest
             Assert.Equal(sourceClass.Id, targetClass.Id);
         }
 
+        [Fact]
+        public async Task Email_ShouldReturnTrue_WhenEmailIsValid()
+        {
+            var configuration = new ConfigurationBuilder()
+             .SetBasePath("C:\\Users\\Casper\\Desktop\\GitHub Projects\\HmsServer\\src\\Presentation\\Hsm.Api")
+             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+             .Build();
+
+            EmailOptions emailOptions = configuration.GetOptions<EmailOptions>("EmailOptions");
+
+            IMailService mailService = new MailService(configuration);
+            string body = @"
+                <html>
+                    <body style='font-family: Arial, sans-serif; color: #333; background-color: #f4f4f4;'>
+                        <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
+                            <h2 style='color: #2c3e50; text-align: center;'>Randevunuz Alýndý</h2>
+                            <p style='font-size: 16px; line-height: 1.5;'>Merhaba,</p>
+                            <p style='font-size: 16px; line-height: 1.5;'>Aþaðýda belirttiðiniz bilgiler doðrultusunda randevunuz baþarýyla alýnmýþtýr:</p>
+            
+                            <table style='width: 100%; margin-top: 20px; border-collapse: collapse;'>
+                                <tr style='background-color: #ecf0f1;'>
+                                    <td style='padding: 10px; font-weight: bold;'>Hastane:</td>
+                                    <td style='padding: 10px;'>xxx hastaneye</td>
+                                </tr>
+                                <tr>
+                                    <td style='padding: 10px; font-weight: bold;'>Klinik:</td>
+                                    <td style='padding: 10px;'>xxx kliniðine</td>
+                                </tr>
+                                <tr style='background-color: #ecf0f1;'>
+                                    <td style='padding: 10px; font-weight: bold;'>Tarih:</td>
+                                    <td style='padding: 10px;'>xxx tarihinde</td>
+                                </tr>
+                                <tr>
+                                    <td style='padding: 10px; font-weight: bold;'>Doktor:</td>
+                                    <td style='padding: 10px;'>xxx doktora</td>
+                                </tr>
+                            </table>
+            
+                            <p style='font-size: 16px; line-height: 1.5; margin-top: 20px;'>Randevunuz baþarýyla oluþturulmuþtur. Lütfen belirtilen tarihte belirtilen yerde hazýr bulunun.</p>
+            
+                            <p style='font-size: 12px; color: #7f8c8d; text-align: center; margin-top: 30px;'>Bu e-posta bir otomatik mesajdýr. Lütfen yanýt vermeyiniz.</p>
+                        </div>
+                    </body>
+                </html>";
+
+
+            await mailService.SendMessageAsync(
+                "kadirskc31@gmail.com",
+                "kadirskc31@gmail.com için randevu alýndý",
+                body,
+                true
+            );
+
+            Assert.True(true);
+        }
     }
 
     public class PersonDto
