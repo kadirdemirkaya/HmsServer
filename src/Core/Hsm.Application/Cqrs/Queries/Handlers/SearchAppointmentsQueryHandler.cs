@@ -73,7 +73,7 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             List<HospitalWithDoctorsModel>? hospitalWithDoctorsModels = await _readRepo.GetListAsync(specification, selectExpression);
 
             if (hospitalWithDoctorsModels is null || !hospitalWithDoctorsModels.Any())
-                return new(ApiResponseModel<PageResponse<HospitalWithDoctorsModel>>.CreateNotFound("Doctors not found"));
+                return new(ApiResponseModel<PageResponse<HospitalWithDoctorsModel>>.CreateNotFound());
 
             PageResponse<HospitalWithDoctorsModel> pageResponse = new(hospitalWithDoctorsModels, new()
             {
