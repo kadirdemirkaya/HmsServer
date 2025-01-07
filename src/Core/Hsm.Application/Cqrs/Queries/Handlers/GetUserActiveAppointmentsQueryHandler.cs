@@ -30,7 +30,6 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             }
             else
                 specification.Conditions.Add(a => a.IsActive == false);
-            //specification.Conditions.Add(a => a.WorkSchedule.IsActive == true);
             specification.Includes = query => query.Include(d => d.User).Include(a => a.WorkSchedule).ThenInclude(w => w.Doctor);
 
             Expression<Func<Appointment, UserAppointmentsModel>> selectExpression = appointment => new UserAppointmentsModel
@@ -78,9 +77,16 @@ namespace Hsm.Application.Cqrs.Queries.Handlers
             List<UserAppointmentsModel> userAppointmentsModels = await _readRepo.GetListAsync(specification, selectExpression);
 
             if (userAppointmentsModels is null)
-                return new(ApiResponseModel<List<UserAppointmentsModel>>.CreateNotFound("User's active appointment not found !"));
+                return new(ApiResponseModel<PageResponse<UserAppointmentsModel>>.CreateNotFound("User's active appointment not found !"));
 
-            return new(ApiResponseModel<List<UserAppointmentsModel>>.CreateSuccess(userAppointmentsModels));
+            PageResponse<UserAppointmentsModel> pageResponse = new(userAppointmentsModels, new()
+            {
+                PageNumber = @event.PageNumber,
+                PageSize = @event.PageSize,
+                TotalRowCount = userAppointmentsModels.Count()
+            });
+
+            return new(ApiResponseModel<PageResponse<UserAppointmentsModel>>.CreateSuccess(pageResponse));
         }
     }
 }

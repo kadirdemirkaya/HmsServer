@@ -7,9 +7,9 @@ namespace Hsm.Application.Cqrs.Queries.Responses
 {
     public class GetUserActiveAppointmentsQueryResponse : IEventResponse
     {
-        public ApiResponseModel<List<UserAppointmentsModel>> ApiResponseModel { get; set; }
+        public ApiResponseModel<PageResponse<UserAppointmentsModel>> ApiResponseModel { get; set; }
 
-        public GetUserActiveAppointmentsQueryResponse(ApiResponseModel<List<UserAppointmentsModel>> apiResponseModel)
+        public GetUserActiveAppointmentsQueryResponse(ApiResponseModel<PageResponse<UserAppointmentsModel>> apiResponseModel)
         {
             ApiResponseModel = apiResponseModel;
         }

@@ -30,11 +30,13 @@ namespace Hsm.Application.Cqrs.Commands.Handlers
 
             string token = await _jwtTokenService.GenerateToken(appUser);
 
+            (string firstName, string lastName) = appUser.FormatUserNameAndLastName(appUser.UserName);
+
             return new LoginCommandResponse(ApiResponseModel<UserDto>.CreateSuccess(new UserDto()
             {
                 Email = appUser.Email,
-                FirstName = appUser.UserName,
-                LastName = appUser.UserName,
+                FirstName = firstName,
+                LastName = lastName,
                 Token = token
             }));
         }
