@@ -27,5 +27,31 @@ namespace Hsm.Api.Controllers
 
             return Ok(loginCommandResponse.ApiResponseModel);
         }
+
+        [HttpPost]
+        [Route("SignUp")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
+        {
+            RegisterCommandRequest registerCommandRequest = new(userRegisterDto);
+            RegisterCommandResponse registerCommandResponse = await _eventBus.SendAsync(registerCommandRequest);
+
+            if (!registerCommandResponse.ApiResponseModel.Success)
+                return BadRequest(registerCommandResponse.ApiResponseModel);
+
+            return Ok(registerCommandResponse.ApiResponseModel);
+        }
+
+        [HttpPost]
+        [Route("EmailConfirmation")]
+        public async Task<IActionResult> EmailConfirmation([FromQuery] string email, [FromQuery] int code)
+        {
+            EmailConfirmationCommandRequest emailConfirmationCommandRequest = new(email, code);
+            EmailConfirmationCommandResponse emailConfirmationCommandResponse = await _eventBus.SendAsync(emailConfirmationCommandRequest);
+
+            if (!emailConfirmationCommandResponse.ApiResponseModel.Success)
+                return BadRequest(emailConfirmationCommandResponse.ApiResponseModel);
+
+            return Ok(emailConfirmationCommandResponse.ApiResponseModel);
+        }
     }
 }

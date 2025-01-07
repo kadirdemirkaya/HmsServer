@@ -20,6 +20,9 @@ namespace Hsm.Application.Cqrs.Commands.Handlers
             if (appUser is null)
                 return new LoginCommandResponse(ApiResponseModel<UserDto>.CreateNotFound("User not found"));
 
+            if (appUser.EmailConfirmed is false)
+                return new(ApiResponseModel<UserDto>.CreateFailure("User email not confirmed"));
+
             SignInResult? identityResult = await _signInManager.PasswordSignInAsync(appUser, @event.userLoginDto.Password, false, false);
 
             if (!identityResult.Succeeded)

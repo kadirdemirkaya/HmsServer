@@ -1,5 +1,5 @@
 $imageName = "kadirkdr/hsmserverapi" 
-$tag = "v23" 
+$tag = "v25" 
 $dockerfilePath = "src\Presentation\Hsm.Api\Dockerfile"
 
 # Docker build işlemi

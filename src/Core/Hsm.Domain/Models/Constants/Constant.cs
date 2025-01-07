@@ -20,6 +20,26 @@
 
         public static class HtmlBodies
         {
+            public static string EmailCode(string code)
+            {
+                return $@"
+                    <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+                        <h2 style='color: #007BFF;'>HRYS - Email Doğrulama Kodu</h2>
+                        <p>Sayın Kullanıcı,</p>
+                        <p>Hastane Randevu Yönetim Sistemi (HRYS) hesabınızı oluşturduğunuz için teşekkür ederiz!</p>
+                        <p>Hesabınızı aktifleştirmek için lütfen aşağıdaki doğrulama kodunu kullanın:</p>
+                        <div style='margin: 20px 0; padding: 15px; background-color: #f8f9fa; border: 1px solid #ced4da; font-size: 20px; text-align: center; font-weight: bold;'>
+                            {code}
+                        </div>
+                        <p>Bu kodun geçerlilik süresi 5 dakikadır. Eğer bu işlemi siz başlatmadıysanız, lütfen bizimle iletişime geçin.</p>
+                        <p>Sağlıklı Günler Dileriz,</p>
+                        <p><strong>HRYS Ekibi</strong></p>
+                        <hr style='border: 0; border-top: 1px solid #eee;' />
+                        <small style='color: #999;'>Bu e-posta otomatik olarak oluşturulmuştur. Yanıtlamayın. Destek için <a href='mailto:support@hrys.com'>support@hrys.com</a> adresine ulaşabilirsiniz.</small>
+                    </div>
+                ";
+            }
+
             public static string TakeAppointmnent(string hospitalName, string startDate, string clinicalName, string doctorName)
             {
                 return $@"
