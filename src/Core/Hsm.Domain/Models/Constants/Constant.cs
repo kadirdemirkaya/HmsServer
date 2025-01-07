@@ -87,12 +87,6 @@
                                 </table>
             
                                 <p style='font-size: 16px; line-height: 1.5; margin-top: 20px;'>Randevunuz başarıyla oluşturulmuştur. Lütfen belirtilen tarihte belirtilen yerde hazır bulunun.</p>
-
-                               <div style='text-align: center; margin-top: 20px;'>
-                                <!-- Dinamik URL ile iptal işlemi ve token ekleme -->
-                                <a href='http://52.59.201.165:811/api/appointment/cancel-appointment/{appointmentId}?token={token}' 
-                                   style='background-color: #e74c3c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Randevuyu İptal Et</a>
-                               </div>
             
                                 <p style='font-size: 12px; color: #7f8c8d; text-align: center; margin-top: 30px;'>Bu e-posta bir otomatik mesajdır. Lütfen yanıt vermeyiniz.</p>
                             </div>
@@ -129,7 +123,7 @@
                                     </tr>
                                 </table>
             
-                                <p style='font-size: 16px; line-height: 1.5; margin-top: 20px;'>Randevunuz başarıyla iptal edilmiştir. Eğer başka bir tarih veya saat için yeni bir randevu almak isterseniz, lütfen bizimle iletişime geçin.</p>
+                                <p style='font-size: 16px; line-height: 1.5; margin-top: 20px;'>Randevunuz başarıyla iptal edilmiştir. Eğer bu işlemi siz yapmadıysanız lütfen HRYS ile iletişime geçiniz.</p>
 
                                 <p style='font-size: 12px; color: #7f8c8d; text-align: center; margin-top: 30px;'>Bu e-posta bir otomatik mesajdır. Lütfen yanıt vermeyiniz.</p>
                             </div>
