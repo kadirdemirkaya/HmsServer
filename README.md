@@ -37,7 +37,7 @@ The project was designed in accordance with Onion Architecture and modern softwa
 
   - **Explanation**: It is a general library that can work on all SQL-based databases..
 
-  - **Usage Example**: You can give an assembly reference and then inject the caching services as follows:
+  - **Usage Example**: An assembly reference can be given and the model interface can be assigned for additional marking.:
     ```csharp
     services.EfCoreRepositoryServiceRegistration<IBaseEntity, HsmDbContext>(ServiceLifetime.Scoped, assembly);
     ```
@@ -46,7 +46,7 @@ The project was designed in accordance with Onion Architecture and modern softwa
 
   - **Explanation**: This library aims to subject models to a validation phase..
 
-  - **Usage Example**: You can give an assembly reference and then inject the caching services as follows:
+  - **Usage Example**: An assembly reference can be given and then the rules required for validation can be written.:
     ```csharp
     services.FluentVal(AssemblyReference.Assembly);
     ```
