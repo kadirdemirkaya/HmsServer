@@ -76,3 +76,4 @@ The project was designed in accordance with Onion Architecture and modern softwa
 - FlowValidate
 - SMTP
 - CQRS
+- PowerShell
