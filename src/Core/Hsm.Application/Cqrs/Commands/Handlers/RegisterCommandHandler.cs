@@ -29,6 +29,12 @@ namespace Hsm.Application.Cqrs.Commands.Handlers
                 TcNumber = @event.UserRegisterDto.TcNumber
             };
 
+            AppUser? existingUser = await _userManager.FindByEmailAsync(@event.UserRegisterDto.Email);
+
+            if (existingUser is not null)
+                if (existingUser.EmailConfirmed is false)
+                    return new(ApiResponseModel<bool>.CreateEmailAlreadyExists("User email is not confirmed!"));
+
             IdentityResult result = await _userManager.CreateAsync(appUser, @event.UserRegisterDto.Password);
 
             if (result.Succeeded)

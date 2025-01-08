@@ -41,6 +41,10 @@ namespace Hsm.Domain.Models.Response
         {
             return new ApiResponseModel<T>(default(T), false, 500, message);
         }
+        public static ApiResponseModel<T> CreateEmailAlreadyExists(params string[] message)
+        {
+            return new ApiResponseModel<T>(default(T), false, 409, message);
+        }
         public override string ToString() => JsonSerializer.Serialize(this);
     }
 }
